@@ -1,0 +1,161 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="ru" class="ie6 ielt7 ielt8 ielt9"><![endif]-->
+<!--[if IE 7]><html lang="ru" class="ie7 ielt8 ielt9"><![endif]-->
+<!--[if IE 8]><html lang="ru" class="ie8 ielt9"><![endif]-->
+<!--[if IE 9]><html lang="ru" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="ru"><!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	
+	<script src="http://static.onlf.ru/js/a.js"></script>
+	<script src="http://static.onlf.ru/js/microdata-js.js"></script>
+	<!--[if lt IE 8]>
+	<script src="http://static.onlf.ru/js/a.ielt8.js"></script>
+	<script src="http://static.onlf.ru/js/microdata-js.ielt8.js"></script>
+	<![endif]-->
+	
+	<link rel="stylesheet" href="http://static.onlf.ru/css/a.css" />
+	<link rel="stylesheet" href="http://static.onlf.ru/css/mainComponents.css" />
+	<style>
+	#test1 .tabsMenu > * {
+		display: inline-block;
+	}	
+	
+	.tabsMenu > * {
+		padding: 4px;
+		border: 1px solid gray;
+	}
+	ul {
+		margin: 0;
+	}
+	.tabsContainer > .data > * {
+		display: none;
+		padding: 10px;
+		border: 1px solid gray;
+	}
+	.tabsContainer > .data > .select {
+		display: block;
+	}
+	</style>
+</head>
+
+<body itemscope="" itemtype="onlifeschema.org/WebApplication">
+
+<div id="test1" class="tabsContainer" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
+	<header>
+		<h2>Горизонтальные вкладки</h2>
+		<nav itemprop="component" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+			<ul class="tabsMenu">
+				<li class="menuItem" data-menu-detail="0" itemprop="menuItem">
+					<span class="name">Пункт 1</span>
+				</li>
+				<li class="menuItem" data-menu-detail="1" itemprop="menuItem">
+					<span class="name">Пункт 2</span>
+				</li>
+				<li class="menuItem" data-menu-detail="2" itemprop="menuItem">
+					<span class="name">Пункт 3</span>
+				</li>
+			</ul>
+		</nav>
+	</header>
+	
+	<div class="data">
+		<div class="select" itemprop="tab">
+			<p>Вкладка №1</p>
+		</div>
+		<div itemprop="tab">
+			<p>Вкладка №2</p>
+		</div>
+		<div itemprop="tab" itemscope="" itemtype="schema.org/Thing">
+			<p>Вкладка №3</p>
+		</div>
+	</div>
+	
+	<footer></footer>
+</div>
+
+<br />
+<hr />
+<br />
+
+<div id="test2" class="tabsContainer clmn111" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
+	<ul class="left tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+		<li class="menuItem" data-menu-detail="0" itemprop="menuItem">
+			<span class="name">Пункт 1</span>
+		</li>
+		<li class="menuItem" data-menu-detail="2" itemprop="menuItem">
+			<span class="name">Пункт 3</span>
+		</li>
+		<li class="menuItem" data-menu-detail="4" itemprop="menuItem">
+			<span class="name">Пункт 5</span>
+		</li>
+	</ul>
+	
+	<div class="center data">
+		<div class="select" itemprop="tab">
+			<p>Вкладка №1</p>
+		</div>
+		<div itemprop="tab">
+			<p>Вкладка №2</p>
+		</div>
+		<div itemprop="tab" itemscope="" itemtype="schema.org/Thing">
+			<p>Вкладка №3</p>
+		</div>
+		<table itemprop="tab">
+			<tr><td>Вкладка №4 _1</td></tr>
+			<tr><td>Вкладка №4 _2</td></tr>
+		</table>
+		<img itemprop="tab" src="http://www.w3.org/2008/site/images/logo-w3c-screen-lg" alt="Вкладка №5" title="Вкладка №5" />
+		<div itemprop="tab" itemscope="" itemtype="schema.org/Thing">
+			<p>Вкладка №6</p>
+		</div>
+	</div>
+	
+	<div class="right tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+		<span class="menuItem" data-menu-detail="1" itemprop="menuItem">Пункт 2</span>
+		<span class="menuItem" data-menu-detail="3" itemprop="menuItem">Пункт 4</span>
+		<span class="menuItem" data-menu-detail="5" itemprop="menuItem">Пункт 6</span>
+	</div>
+</div>
+	
+<script src="../../__SRC/class.MicroformatError.js"></script>
+<script src="../../__SRC/class.ui.WAElement.js"></script>
+<script src="../../__SRC/class.ui.WebApplication.js"></script>
+<script src="../../__SRC/class.ui.WATabs.js"></script>
+<script src="../../__SRC/class.ui.WAMenu.js"></script>
+<script src="../../__SRC/class.ui.WAForm.js"></script>
+<script src="../../__SRC/MicroformatConstructors.js"></script>
+
+<script>
+;(function(global) {//closure
+
+//Включаем автообновление микроданных
+//global.microdata_liveProperties = true
+
+if(!global.Site)global.Site = {};
+var Site = global.Site,
+	MicroformatConstructors = global["MicroformatConstructors"];
+
+function main() {
+	//Получаем ссылку на ВЕБ-приложение
+	var webAppElement = document.getItems("onlifeschema.org/WebApplication")[0],
+		type = webAppElement.getAttribute("itemtype");
+	
+	
+	var constructor = MicroformatConstructors[type];
+		
+	if(constructor) {
+		Site.webApp = new constructor(webAppElement, null);
+		Site.webApp.init();
+	}
+	else console.error("There is no constructor named '" + type + "'")
+}
+if(document.readyState == "complete")main();
+else window.addEventListener("DOMContentLoaded", main);
+
+})(window);
+</script>
+
+</body>

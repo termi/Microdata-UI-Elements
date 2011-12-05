@@ -1,0 +1,10 @@
+<PUBLIC:COMPONENT lightWeight="true">
+<PUBLIC:PROPERTY NAME="currentTab" PUT="b" GET="a" />
+<PUBLIC:PROPERTY NAME="tabCount" GET="c" />
+<SCRIPT>
+var m=this,
+a=m.getcurrentTab,
+b=m.setcurrentTab,
+c=m.gettabCount
+</SCRIPT>
+</PUBLIC:COMPONENT>
