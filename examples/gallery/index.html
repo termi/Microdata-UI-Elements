@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="ru" class="ie6 ielt7 ielt8 ielt9"><![endif]-->
+<!--[if IE 7]><html lang="ru" class="ie7 ielt8 ielt9"><![endif]-->
+<!--[if IE 8]><html lang="ru" class="ie8 ielt9"><![endif]-->
+<!--[if IE 9]><html lang="ru" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="ru"><!--<![endif]-->
+<head>
+	<meta charset="utf-8" />
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	
+	<script src="http://static.onlf.ru/js/a.js"></script>
+	<script src="http://static.onlf.ru/js/microdata-js.js"></script>
+	<!--[if lt IE 8]>
+	<script src="http://static.onlf.ru/js/a.ielt8.js"></script>
+	<script src="http://static.onlf.ru/js/microdata-js.ielt8.js"></script>
+	<![endif]-->
+	
+	<link rel="stylesheet" href="http://static.onlf.ru/css/a.css" />
+	<link rel="stylesheet" href="http://static.onlf.ru/css/mainComponents.css" />
+	<style>
+	.gallery > * {
+		border: 1px solid gray;
+		min-height: 40px;
+	}	
+	
+	.gallery > .data img {
+		
+	}
+	
+	.gallery > footer .thumbnail {
+		display: inline-block;
+		width: 160px;
+		height: 120px;
+		margin-right: 4px;
+		border: 2px solid gray;
+		cursor: pointer;
+	}
+	.gallery > footer .thumbnail.select {
+		border: 2px solid green;
+	}
+	
+	</style>
+</head>
+
+<body itemscope="" itemtype="onlifeschema.org/WebApplication">
+
+<section class="gallery" itemscope="" itemprop="gallery component" itemtype="schema.org/ImageGallery">
+  <header>
+    <h3 class="title" itemprop="name">Моя галерея</h3>
+    <p class="description" itemprop="description"></p>
+  </header>
+  <div class="data" itemprop="primaryImageOfPage" itemscope="" itemtype="schema.org/ImageObject">
+    <img itemprop="contentURL" src="#">
+    <p class="caption" itemprop="name caption"></p>
+    <span class="description" itemprop="description"></span>
+  </div>
+  <footer>
+    <div class="thumbnail select" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">Картинка 1</p>
+      <span class="description" itemprop="description">Описание 1</span>
+      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/127.jpg?1">
+      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/127-100x100.jpeg">
+    </div>
+    <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">Название картинки 2 --- лфыоврал фылва</p>
+      <span class="description" itemprop="description">Описание фыв32а4ф6 5ы4в6а4</span>
+      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/128.jpg?1">
+      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/128-100x100.jpeg">
+    </div>
+    <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">Тестовая картинка 3</p>
+      <span class="description" itemprop="description">Описание 3</span>
+      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/129.jpg?1">
+      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/129-100x100.jpeg">
+    </div>
+    <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">3123 123 4  йцу</p>
+      <span class="description" itemprop="description">Описание 45</span>
+      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/130.jpg?1">
+      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/130-100x100.jpeg">
+    </div>
+  </footer>
+</section>
+
+<script src="../../lib/microdata-ui.js"></script>
+
+<script>
+;(function(global) {//closure
+
+//Включаем автообновление микроданных
+//global.microdata_liveProperties = true
+
+if(!global.Site)global.Site = {};
+var Site = global.Site,
+	MicroformatConstructors = global["MicroformatConstructors"];
+
+function main() {
+	//Получаем ссылку на ВЕБ-приложение
+	var type = "onlifeschema.org/WebApplication",
+		webAppElement = document.getItems(type)[0];
+	
+	var constructor = MicroformatConstructors[type];
+		
+	if(constructor) {
+		Site.webApp = new constructor(webAppElement, null);
+		Site.webApp.init();
+	}
+	else console.error("There is no constructor named '" + type + "'")
+}
+if(document.readyState == "complete")main();
+else window.addEventListener("DOMContentLoaded", main);
+
+})(window);
+</script>
+
+</body>

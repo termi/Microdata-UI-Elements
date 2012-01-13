@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * @requared Utils.Dom.isEmptyElement
  * @requared MicroformatError
  * @requared MicroformatConstructors

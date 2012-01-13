@@ -1,4 +1,4 @@
-﻿/**
+﻿/*
  * @requared ui.WAElement
  */
 
