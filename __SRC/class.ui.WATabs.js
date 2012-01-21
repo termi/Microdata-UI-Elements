@@ -163,7 +163,7 @@ WATabs.prototype.initTabsSpetialProperties = function(_element) {
 
 	//IE < 8
 	if(_element["getcurrentTab"] && _element["addBehavior"]) {
-		_element["addBehavior"]("class.ui.WATabs.htc");
+		_element["addBehavior"]("class.ui.WATabs.ielt8.htc");
 	}
 }
 
