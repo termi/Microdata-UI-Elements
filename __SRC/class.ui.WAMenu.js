@@ -55,7 +55,7 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		//Вызываем метод родительского класса
 		if(superInit.apply(thisObj, arguments) === false)return false;
 		
-		if(_menuEvent)(thisObj.menuItems = $A(thisObj.properties["menuItem"])).forEach(function(item) {
+		if(_menuEvent)(thisObj.menuItems = Array.from(thisObj.properties["menuItem"])).forEach(function(item) {
 			item.addEventListener("click", _menuItemsOnClick, false);
 			//TODO:: Проверить, чтобы событие не обрабатывалось более 1го раза
 			item.addEventListener("touchstart", _menuItemsOnClick, false);
@@ -63,7 +63,7 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		});
 	}
 }
-inherit(WAMenu, ui.WAElement);
+Object.inherit(WAMenu, ui.WAElement);
 /* STATIC */
 WAMenu.menuEventAttribute = "data-menu-event";
 WAMenu.menuEventDetailAttribute = "data-menu-detail";

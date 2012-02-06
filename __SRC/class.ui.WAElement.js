@@ -1,14 +1,25 @@
 ﻿/*
- * @requared Utils.Dom.isEmptyElement
  * @requared MicroformatError
  * @requared MicroformatConstructors
+ * @requared ui.EventTypes (enum.ui.EventTypes.js)
  */
 
 ;(function(global) {//closure
 
-
 var ui = global.ui = global.ui || {},
-	_isEmptyElement = global["Utils"]["Dom"]["isEmptyElement"];
+	_isEmptyElement = function(element) {
+		var isEmpty = !element.firstChild, i = 0;
+		
+		if(!isEmpty) {
+			isEmpty = true;
+			
+			while((el = element.childNodes[i++]) && isEmpty)
+				isEmpty = el.nodeType === 3 && el.nodeValue.trim() === "";
+		}
+		
+		return isEmpty;
+	},
+	_forEach = Function.prototype.call.bind(Array.prototype.forEach);
 
 /**
  * Класс, общий для всех UI-объектов
@@ -78,12 +89,12 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 			
 			ResourceManager.loadResource(urn, function(jsonOrText) {
 			
-				function step2(container) {
+				function step2(container, _element) {
 					//Инициализируем, если надо приложение
 					if(typeof jsonOrText == "object") {
 						var constructor = jsonOrText["constructor"],
 							application = new constructor(container);
-						application.init();
+						application.init(_element);
 					}
 				}
 				
@@ -93,16 +104,16 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 					el.innerHTML = text;
 					el = el.firstChild;
 					
-					$A(el.attributes).forEach(function(attr) {
+					_forEach(el.attributes, function(attr) {
 						if(attr.name == "class") {
-							$A(el.classList).forEach(function(className) {
+							_forEach(el.classList, function(className) {
 								container.classList.add(className);
 							})
 						}
 						container.setAttribute(attr.name, attr.value);
 					})
 					
-					$A(el.childNodes).forEach(function(child) {
+					_forEach(el.childNodes, function(child) {
 						container.appendChild(child);
 					});
 					
@@ -138,9 +149,9 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 					}
 				}
 				else {
-					step2(_element);
+					step2(jsonOrText, _element);
 					//Заново запускаем инициализацию
-					thisObj.init();
+					//thisObj.init();
 				}
 				
 			});
@@ -148,8 +159,6 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 			//Поднимаем флаг, что мы уже загружали шаблон или приложение
 			thisObj.templateLoaded = true;
 				
-			//Останавливаем инициализацию
-			return false;
 		}
 		/*\ Переделать END \*/
 		
@@ -167,8 +176,8 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 		thisObj.properties = _element["properties"];
 		
 		//Пройдёмся по всем под-компонентам и инициализируем их
-		thisObj.сomponents = thisObj.properties["component"];
-		$A(thisObj.сomponents).forEach(function(_component) {
+		thisObj.сomponents = Array.from(thisObj.properties["component"]);
+		_forEach(thisObj.сomponents, function(_component) {
 			var _itemType = _component.getAttribute("itemtype");
 			if(_itemType === null)
 				throw new MicroformatError("itemscope attribute need");
@@ -185,7 +194,7 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 		})		
 		
 		//Подпишемся на события
-		_element.addEventListener("show", function(event) {
+		_element.addEventListener(ui.EventTypes.ON_SHOW, function(event) {
 			//Если компонент был скрыт с помощью style - уберём скрытие
 			var style = _element.getAttribute("style");
 			if(style) {
@@ -195,7 +204,7 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 			
 			this.classList.add("select");
 		})
-		_element.addEventListener("hide", function(event) {
+		_element.addEventListener(ui.EventTypes.ON_HIDE, function(event) {
 			this.classList.remove("select");
 		})
 				
@@ -203,6 +212,7 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 	}
 }
 /* STATIC */
+
 /**
  * Проверка на соответствие формату микродаты
  * @type {ui.WAElement}

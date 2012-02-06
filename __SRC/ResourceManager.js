@@ -1,5 +1,7 @@
 ﻿;(function(global, ajax) {//closure
 
+if(global["ResourceManager"])return;//Avoid recreating
+
 var ResourceManager = global["ResourceManager"] = new function() {
 	var thisObj = this;
 	
@@ -12,10 +14,20 @@ var ResourceManager = global["ResourceManager"] = new function() {
 		__DEFAULT_APPLICATION_FILE__ = ".js";//"/.json"
 
 /* PRIVATE | FUNCTIONS */
-	function processUrl(url, origin) {
+	function _processUrl(url, origin) {
 		return url.charAt(0) == "/" ? url :
 			(/^http(s?)\:\/\//ig).test(url) ? url :
 			(origin + "/" + url);
+	}
+	
+	function _deleteCreateAndAppendElement(_tagName, _id) {
+		var el;
+		(el = _id ? document.getElementById(_id) : 0) &&
+			el.parentNode.removeChild(el);//Удалим старый элемент
+		
+		document.head.appendChild(
+			document.createElement(_tagName)
+			).id = _id;
 	}
 		
 /* PUBLIC */
@@ -32,37 +44,20 @@ var ResourceManager = global["ResourceManager"] = new function() {
 	 * @param {string} _id Уникальный идентификатор элемента
 	 */
 	thisObj.createScript = function(_src, _onLoad, _id) {
-		var script = document.getElementById(_id);
-		
-		//Удалим старый скрипт
-		if(script) {
-			script.parentNode.removeChild(script);
-		}
-		
-		script = document.createElement("script");
-		if(_id)script.id = _id;
-		if(typeof _onLoad == "function")script.onload = _onLoad;
+		var script = _deleteCreateAndAppendElement("script", _id);
+		script.onload = _onLoad;
 		script.src = _src;
-		document.head.appendChild(script);
 	}
 	
 	/**
-	 * Функция создаёт скрипт
+	 * Функция создаёт стиль
 	 * @param {string} _src Путь до скрипта
 	 * @param {string} _id Уникальный идентификатор элемента
 	 */
 	thisObj.createStyle = function(_src, _id) {
-		var link = document.getElementById(_id);
-		
-		//Удалим старый стиль
-		if(link) {
-			link.parentNode.removeChild(link);
-		}
-		
-		link = document.createElement("link");
+		var link = _deleteCreateAndAppendElement("link", _id);
 		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("href", _src);
-		document.head.appendChild(link);
 	}
 	
 	/**
@@ -84,6 +79,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			
 			if(url.substr(0, 9) === "templates") {//Если это шаблон
 				//thisObj.loadTemplate(url, onDone, onError);
+				//TODO::
 				onDone("")
 				return;
 			}
@@ -92,9 +88,11 @@ var ResourceManager = global["ResourceManager"] = new function() {
 				return;
 			}
 		}
-		
-		onDone("")
-		//thisObj.loadTextResource(url, onDone, onError);
+		else {
+			//TODO::
+			onDone("")
+			//thisObj.loadTextResource(url, onDone, onError);
+		}
 	}
 	
 	/**
@@ -139,7 +137,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 	
 	
 	/**
-	 * Загружает шаблон
+	 * Загружает приложение
 	 * @param {string} url Путь к ресурсу
 	 * @param {function(responseText: Object)} onDone Callback-функция вызывается после получения данных. В первом параметре передаётся ссылка на загруженное приложение
 	 * @param {Function=} onError Callback-функция вызывается при ошибке в получении данных
@@ -168,21 +166,26 @@ var ResourceManager = global["ResourceManager"] = new function() {
 				console.error("Can't parse JSON | error message: " + e.message);
 				return false;
 			}
+			
+			//TODO:: 
+			//1. Убрать отсюда разбор JSON и переместить его в конструктор Application
+			//2. Передавать JSON в конструктор Application
+			
+			applicationId = json.id;
 			//Ожидаем JSON определённого формата
 			//Загрузим необходимые css-файлы
 			cssArray = json.css;
-			if(cssArray)cssArray.forEach(function(css) {
-				thisObj.createStyle(processUrl(css, url));
+			if(cssArray)cssArray.forEach(function(css, key) {
+				thisObj.createStyle(_processUrl(css, url, "style_" + applicationId + "_" + key));
 			})
 			//Загрузим необходимые js-файлы
 			jsArray = json.js;
-			if(jsArray)jsArray.forEach(function(js) {
-				thisObj.createScript(processUrl(js, url));
+			if(jsArray)jsArray.forEach(function(js, key) {
+				thisObj.createScript(_processUrl(js, url, "script_" + applicationId + "_" + key));
 			})
 			
-			applicationId = json.id;
 			//Основной js-файл приложения должен экспортировать метод init(DOMElement) в глобальный объект export
-			if(json.app)thisObj.createScript(processUrl(json.app, url), function() {
+			if(json.app)thisObj.createScript(_processUrl(json.app, url), function() {
 				//onload
 				
 				var exports = global["exports"];
@@ -227,8 +230,17 @@ var ResourceManager = global["ResourceManager"] = new function() {
 })
 (
 	window,
+	/**
+	 * @param {string} url
+	 * @param {function(String)} onDone
+	 * @param {function(XMLHttpRequest)} onError
+	 * @param {boolean=} isPost [default=true] POST?
+	 */
 	function(url, onDone, onError, isPost) {//AJAX
+		if(isPost == void 0)isPost = true;
+		
 		var params;
+		
 		if(isPost) {
 			params = url.splite("?")[1];
 			url = url.splite("?")[0];
@@ -238,9 +250,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			function(xhr) {
 				onDone(xhr.responseText);
 			},
-			function(xhr) {
-				onError();
-			},
+			onError,
 			{"post" : isPost}
 		);
 	}

@@ -58,7 +58,7 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 		
 		//Подпишемся на события::
 		thisObj.DOMElement.addEventListener("showimage", function(event) {
-			var prevImage = $A(thisObj.images)[thisObj.currentImage],
+			var prevImage = thisObj.images[thisObj.currentImage],
 				newImage = event.detail;
 			
 			//console.log("event 'tabchange' fired. oldTabIndex = '" + event["prevTab"] + "', newTabIndex = '" + event["currentTab"] + "'")
@@ -68,11 +68,11 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 			}
 			if(newImage) {
 				newImage.classList.add("select");
-				thisObj.currentImage = $A(thisObj.images).indexOf(newImage);
+				thisObj.currentImage = Array.from(thisObj.images).indexOf(newImage);
 			}
 			
-			if(thisObj.currentImage < 0 || !newImage)thisObj.currentImage = 0, newImage = $A(thisObj.images)[0];
-			else if(thisObj.currentImage >= thisObj.imageCount)thisObj.currentImage = thisObj.imageCount - 1, newImage = $A(thisObj.images)[thisObj.currentImage];
+			if(thisObj.currentImage < 0 || !newImage)thisObj.currentImage = 0, newImage = Array.from(thisObj.images)[0];
+			else if(thisObj.currentImage >= thisObj.imageCount)thisObj.currentImage = thisObj.imageCount - 1, newImage = Array.from(thisObj.images)[thisObj.currentImage];
 			
 			thisObj.openImage["properties"]["contentURL"][0].itemValue = newImage["properties"]["contentURL"][0].itemValue;
 			thisObj.openImage["properties"]["caption"][0].itemValue = newImage["properties"]["caption"][0].itemValue;
@@ -82,7 +82,7 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 			event.stopPropagation();
 		})
 		
-		$A(thisObj.images).forEach(function(imageEl, _currentIndex){
+		Array.from(thisObj.images).forEach(function(imageEl, _currentIndex){
 			/*if(!tabEl.itemType || !~tabEl.itemType.indexOf("onlifeschema.org/WATab")) {
 				throw new Error("Таб должен быть типа onlifeschema.org/WATab")
 			}*/		
@@ -99,7 +99,7 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 		
 	}
 }
-inherit(ImageGallery, ui.WAElement);
+Object.inherit(ImageGallery, ui.WAElement);
 /* STATIC */
 
 /* PROTOTYPE */

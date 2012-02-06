@@ -74,7 +74,7 @@ var WAForm = ui.WAForm = function (_params) {
 		
 	}
 }
-inherit(WAForm, ui.WAElement);
+Object.inherit(WAForm, ui.WAElement);
 /* STATIC */
 
 /* PROTOTYPE */

@@ -17,7 +17,7 @@ var MicroformatError = global["MicroformatError"] = function(message) {
 
 	return thisObj;
 }
-inherit(MicroformatError, Error)
+Object.inherit(MicroformatError, Error)
 /* STATIC */
 MicroformatError.F = function(){}//default constructor if this === window
 

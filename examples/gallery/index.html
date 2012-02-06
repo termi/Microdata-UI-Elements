@@ -9,7 +9,7 @@
 	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	
-	<script src="http://static.onlf.ru/js/a.js"></script>
+	<script src="https://raw.github.com/termi1uc1/ES5-DOM-SHIM/master/__SRC/a.js"></script>
 	<script src="http://static.onlf.ru/js/microdata-js.js"></script>
 	<!--[if lt IE 8]>
 	<script src="http://static.onlf.ru/js/a.ielt8.js"></script>
@@ -45,7 +45,7 @@
 
 <body itemscope="" itemtype="onlifeschema.org/WebApplication">
 
-<section class="gallery" itemscope="" itemprop="gallery component" itemtype="schema.org/ImageGallery">
+<section class="gallery" itemscope="" itemprop="gallery component" itemtype="schema.org/ImageGallery" itemid="urn:onlife:apps:galleryWrapper">
   <header>
     <h3 class="title" itemprop="name">Моя галерея</h3>
     <p class="description" itemprop="description"></p>
@@ -83,7 +83,16 @@
   </footer>
 </section>
 
-<script src="../../lib/microdata-ui.js"></script>
+<script src="../../__SRC/enum.ui.EventTypes.js"></script>
+<script src="../../__SRC/class.MicroformatError.js"></script>
+<script src="../../__SRC/class.ui.WAElement.js"></script>
+<script src="../../__SRC/class.ui.WebApplication.js"></script>
+<script src="../../__SRC/class.ui.WATabs.js"></script>
+<script src="../../__SRC/class.ui.ImageGallery.js"></script>
+<script src="../../__SRC/class.ui.WAMenu.js"></script>
+<script src="../../__SRC/class.ui.WAForm.js"></script>
+<script src="../../__SRC/MicroformatConstructors.js"></script>
+<script src="../../__SRC/ResourceManager.js"></script>
 
 <script>
 ;(function(global) {//closure
@@ -91,6 +100,7 @@
 //Включаем автообновление микроданных
 //global.microdata_liveProperties = true
 
+//Инициализация приложения START
 if(!global.Site)global.Site = {};
 var Site = global.Site,
 	MicroformatConstructors = global["MicroformatConstructors"];
@@ -110,6 +120,25 @@ function main() {
 }
 if(document.readyState == "complete")main();
 else window.addEventListener("DOMContentLoaded", main);
+//Инициализация приложения END
+
+//Зарегистрируем тестовое приложение
+global["ResourceManager"].applications["apps/galleryWrapper"] = {
+	id : "galleryWrapper",
+	constructor : function() {
+		var thisObj = this;
+		thisObj.init = function(root) {
+			var _name = root.properties["name"][0].itemValue;
+			root.addEventListener("showimage", function(event) {
+				root.properties["name"][0].itemValue = _name + " " + event.detail.properties["name"][0].itemValue
+				root.properties["description"][0].itemValue = event.detail.properties["description"][0].itemValue
+			})
+		}
+	},
+	css : [
+		"http://static.onlf.ru/css/a.css"
+	]
+}
 
 })(window);
 </script>

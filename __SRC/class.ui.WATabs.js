@@ -50,7 +50,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.initTabsSpetialProperties(thisObj.DOMElement);
 		
 		//Получим ссылку на контейнер табов
-		thisObj.subTabs = $A(thisObj.properties["tab"]);
+		thisObj.subTabs = Array.from(thisObj.properties["tab"]);
 		thisObj.tabsCount = thisObj.subTabs.length;
 			
 		thisObj.subTabs.forEach(function(tabEl, _currentIndex){
@@ -62,7 +62,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 			if(tabEl.classList.contains("select"))thisObj.currentTab = _currentIndex;				
 			
 			//Подпишемся на события
-			tabEl.addEventListener("show", function(event) {
+			tabEl.addEventListener(ui.EventTypes.ON_SHOW, function(event) {
 				//Проверим, что данная вкладка еще не открыта, и только если она не открыта, 
 				if(thisObj.currentTab != _currentIndex)
 					thisObj.DOMElement.currentTab = _currentIndex;
@@ -70,7 +70,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 				this.classList.add("select");
 				//return false;
 			})
-			tabEl.addEventListener("hide", function(event) {
+			tabEl.addEventListener(ui.EventTypes.ON_HIDE, function(event) {
 				this.classList.remove("select");
 				//return false;
 			})
@@ -84,15 +84,15 @@ var WATabs = ui["WATabs"] = function (_params) {
 			
 			//console.log("event 'tabchange' fired. oldTabIndex = '" + event["prevTab"] + "', newTabIndex = '" + event["currentTab"] + "'")
 			
-			if(prevTab)prevTab.dispatchEvent(new CustomEvent("hide", {bubbles : false, cancelable : true}));
-			if(newTab)newTab.dispatchEvent(new CustomEvent("show", {bubbles : false, cancelable : true}));
+			if(prevTab)prevTab.dispatchEvent(new CustomEvent(ui.EventTypes.ON_HIDE, {bubbles : false, cancelable : true}));
+			if(newTab)newTab.dispatchEvent(new CustomEvent(ui.EventTypes.ON_SHOW, {bubbles : false, cancelable : true}));
 			
 			//Предотвращяем всплытие события, для того, чтобы контейнер не получал ложного срабатывания
 			event.stopPropagation();
 		})
 		
 		//Меню для таб-контейнера
-		thisObj.DOMElement.addEventListener("menuopentab", function(event) {
+		thisObj.DOMElement.addEventListener(ui.EventTypes.ON_CURRENT_CHILD_CHANGE, function(event) {
 			var newTabIndex = parseInt(event.detail);
 			if(!isNaN(newTabIndex) && thisObj.DOMElement.currentTab != newTabIndex) {
 				thisObj.DOMElement.currentTab = newTabIndex;
@@ -105,7 +105,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.DOMElement.currentTab = thisObj.currentTab;
 	}
 }
-inherit(WATabs, ui.WAElement);
+Object.inherit(WATabs, ui.WAElement);
 /* STATIC */
 
 /* PROTOTYPE */
@@ -126,6 +126,9 @@ WATabs.prototype.showTab = function(newValue) {
 	if(newValue >= thisObj.subTabs.length) {
 		//console.error("new tab index value too must newValue = '" + newValue + "'. Max: '" + (thisObj.subTabs.length - 1) + "'");
 		newValue = thisObj.subTabs.length - 1;
+	}
+	else if(newValue < 0) {
+		newValue = 0;
 	}
 	
 	thisObj.currentTab = ev["currentTab"] = newValue;
@@ -152,12 +155,12 @@ WATabs.prototype.initTabsSpetialProperties = function(_element) {
 					thisObj.showTab(newValue);
 				}
 				return thisObj.currentTab;
-			}, "ielt8" : true
+			}
 		},
 		"tabCount" : {
 			"get" : function() {
 				return thisObj.tabsCount;
-			}, "ielt8" : true
+			}
 		}
 	});
 

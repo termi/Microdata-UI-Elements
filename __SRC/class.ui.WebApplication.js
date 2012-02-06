@@ -125,7 +125,7 @@ var WebApplication = ui["WebApplication"] = function (_params) {
 		
 	}
 }
-inherit(WebApplication, ui.WAElement);
+Object.inherit(WebApplication, ui.WAElement);
 /* STATIC */
 
 /* PROTOTYPE */

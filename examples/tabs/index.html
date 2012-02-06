@@ -9,7 +9,7 @@
 	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	
-	<script src="http://static.onlf.ru/js/a.js"></script>
+	<script src="https://raw.github.com/termi1uc1/ES5-DOM-SHIM/master/__SRC/a.js"></script>
 	<script src="http://static.onlf.ru/js/microdata-js.js"></script>
 	<!--[if lt IE 8]>
 	<script src="http://static.onlf.ru/js/a.ielt8.js"></script>
@@ -46,7 +46,7 @@
 <div id="test1" class="tabsContainer" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
 	<header>
 		<h2>Горизонтальные вкладки</h2>
-		<nav itemprop="component" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+		<nav itemprop="component" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
 			<ul class="tabsMenu">
 				<li class="menuItem" data-menu-detail="0" itemprop="menuItem">
 					<span class="name">Пункт 1</span>
@@ -81,7 +81,7 @@
 <br />
 
 <div id="test2" class="tabsContainer clmn111" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
-	<ul class="left tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+	<ul class="left tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
 		<li class="menuItem" data-menu-detail="0" itemprop="menuItem">
 			<span class="name">Пункт 1</span>
 		</li>
@@ -98,7 +98,7 @@
 			<p>Вкладка №1</p>
 			
 				<div id="test2" class="tabsContainer clmn111" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
-				<ul class="left tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+				<ul class="left tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
 					<li class="menuItem" data-menu-detail="0" itemprop="menuItem">
 						<span class="name">Пункт 1</span>
 					</li>
@@ -130,7 +130,7 @@
 					</div>
 				</div>
 				
-				<div class="right tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+				<div class="right tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
 					<span class="menuItem" data-menu-detail="1" itemprop="menuItem">Пункт 2</span>
 					<span class="menuItem" data-menu-detail="3" itemprop="menuItem">Пункт 4</span>
 					<span class="menuItem" data-menu-detail="5" itemprop="menuItem">Пункт 6</span>
@@ -158,13 +158,14 @@
 		</div>
 	</div>
 	
-	<div class="right tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+	<div class="right tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
 		<span class="menuItem" data-menu-detail="1" itemprop="menuItem">Пункт 2</span>
 		<span class="menuItem" data-menu-detail="3" itemprop="menuItem">Пункт 4</span>
 		<span class="menuItem" data-menu-detail="5" itemprop="menuItem">Пункт 6</span>
 	</div>
 </div>
-	
+
+<script src="../../__SRC/enum.ui.EventTypes.js"></script>
 <script src="../../__SRC/class.MicroformatError.js"></script>
 <script src="../../__SRC/class.ui.WAElement.js"></script>
 <script src="../../__SRC/class.ui.WebApplication.js"></script>
