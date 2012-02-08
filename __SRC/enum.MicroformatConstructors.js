@@ -11,6 +11,9 @@
 
 var ui = global.ui;
 
+/**
+ * @enum {Function}
+ */
 global["MicroformatConstructors"] = {
 	"onlifeschema.org/WebApplication" : ui["WebApplication"],
 	"onlifeschema.org/WAElement" : ui["WAElement"],

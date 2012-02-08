@@ -11,7 +11,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 		/** @type {string} @const */
 		__SCRIPT_ID_PREFIX__ = "scr" + randomString(5),
 		/** @type {string} @const */
-		__DEFAULT_APPLICATION_FILE__ = ".js";//"/.json"
+		__DEFAULT_APPLICATION_FILE__ = ".json"
 
 /* PRIVATE | FUNCTIONS */
 	function _processUrl(url, origin) {

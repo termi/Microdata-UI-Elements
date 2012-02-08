@@ -19,17 +19,14 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 	WAMenu.superclass.constructor.apply(thisObj, arguments);
 	
 /* PRIVATE */
-	var _menuEvent = thisObj.DOMElement.getAttribute(WAMenu.menuEventAttribute);
-	if(!_menuEvent && global.DEBUG) {
-		console.error("WAMenu element must have value in '" + WAMenu.menuEventAttribute + "' attribute");
-	}
-	
+
 /* PRIVATE | FUNCTIONS*/
 	/**
 	 * Event listener for menuItems
+	 * @this {HTMLElement} Элемент на который мы повесим этот обработчик
 	 */
 	var _menuItemsOnClick = bubbleEventListener(WAMenu.menuEventDetailAttribute, function(event, elem, elemAttrValue) {
-		var ev = new CustomEvent(_menuEvent, {bubbles : true, cancelable : true, detail : elemAttrValue})
+		var ev = new CustomEvent(thisObj.menuEvent, {bubbles : true, cancelable : true, detail : elemAttrValue})
 		
 		//Создаём событие, которое "всплывёт" до нужного обработчика или до document
 		thisObj.DOMElement.dispatchEvent(ev)
@@ -42,6 +39,8 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 	 * @type {Array.<Node>}
 	 */
 	thisObj.menuItems;
+
+	thisObj.menuEvent = thisObj.DOMElement.getAttribute(WAMenu.menuEventAttribute);
 	
 /* INIT */
 	/** Ссылка на метод init родительского класса
@@ -55,19 +54,23 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		//Вызываем метод родительского класса
 		if(superInit.apply(thisObj, arguments) === false)return false;
 		
-		if(_menuEvent)(thisObj.menuItems = Array.from(thisObj.properties["menuItem"])).forEach(function(item) {
-			item.addEventListener("click", _menuItemsOnClick, false);
-			//TODO:: Проверить, чтобы событие не обрабатывалось более 1го раза
-			item.addEventListener("touchstart", _menuItemsOnClick, false);
-			item.addEventListener("touchend", _menuItemsOnClick, false);
-		});
+		
+		if(!thisObj.menuEvent && global.DEBUG) {
+			console.error("WAMenu element must have value in '" + WAMenu.menuEventAttribute + "' attribute");
+		}
+		
+		//Menu event listener init
+		thisObj.DOMElement.addEventListener("click", _menuItemsOnClick, false);
+		
+		//Alias
+		thisObj.menuItems = thisObj.properties["menuItem"];
 	}
 }
 Object.inherit(WAMenu, ui.WAElement);
+
 /* STATIC */
 WAMenu.menuEventAttribute = "data-menu-event";
 WAMenu.menuEventDetailAttribute = "data-menu-detail";
-
 
 /* PROTOTYPE */
 /**

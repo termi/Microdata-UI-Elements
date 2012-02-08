@@ -207,7 +207,10 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 		_element.addEventListener(ui.EventTypes.ON_HIDE, function(event) {
 			this.classList.remove("select");
 		})
-				
+		
+		//For debug
+		_element.__uielement__ = thisObj;
+		
 		return thisObj.isInit = true;
 	}
 }

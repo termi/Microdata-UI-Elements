@@ -19,18 +19,21 @@ var WATabs = ui["WATabs"] = function (_params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
 	WATabs.superclass.constructor.apply(thisObj, arguments);
-	
-/* PUBLIC */
+
+/* PROTECTED */
 	/** Подтабы. Список Node's @type {Array.<Node>} */
-	thisObj.subTabs = null;
+	thisObj._subTabs = null;
 
 	/** Кол-во под-табов @type {number} */
-	thisObj.tabsCount = 0;
+	thisObj._tabsCount = 0;
 	
 	/** Текущий выбранный под-таб @type {number} */
-	thisObj.currentTab = -1;
-
+	thisObj._currentTab = -1;	
+	
+/* PUBLIC */
+	
 /* PUBLIC | FUNCTIONS */
+	
 
 /* INIT */
 	/** Ссылка на метод init родительского класса
@@ -50,21 +53,21 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.initTabsSpetialProperties(thisObj.DOMElement);
 		
 		//Получим ссылку на контейнер табов
-		thisObj.subTabs = Array.from(thisObj.properties["tab"]);
-		thisObj.tabsCount = thisObj.subTabs.length;
+		thisObj._subTabs = Array.from(thisObj.properties["tab"]);
+		thisObj._tabsCount = thisObj._subTabs.length;
 			
-		thisObj.subTabs.forEach(function(tabEl, _currentIndex){
+		thisObj._subTabs.forEach(function(tabEl, _currentIndex){
 			/*if(!tabEl.itemType || !~tabEl.itemType.indexOf("onlifeschema.org/WATab")) {
 				throw new Error("Таб должен быть типа onlifeschema.org/WATab")
 			}*/
 			
 			//Ищем признак выбранности таба
-			if(tabEl.classList.contains("select"))thisObj.currentTab = _currentIndex;				
+			if(tabEl.classList.contains("select"))thisObj._currentTab = _currentIndex;				
 			
 			//Подпишемся на события
 			tabEl.addEventListener(ui.EventTypes.ON_SHOW, function(event) {
 				//Проверим, что данная вкладка еще не открыта, и только если она не открыта, 
-				if(thisObj.currentTab != _currentIndex)
+				if(thisObj._currentTab != _currentIndex)
 					thisObj.DOMElement.currentTab = _currentIndex;
 					
 				this.classList.add("select");
@@ -79,8 +82,8 @@ var WATabs = ui["WATabs"] = function (_params) {
 		//Подпишемся на события::
 		//Сообщения об изменеии thisObj.DOMElement.currentTab
 		thisObj.DOMElement.addEventListener("tabchange", function(event) {
-			var prevTab = thisObj.subTabs[event["prevTab"]],
-				newTab = thisObj.subTabs[event["currentTab"]];
+			var prevTab = thisObj._subTabs[event["prevTab"]],
+				newTab = thisObj._subTabs[event["currentTab"]];
 			
 			//console.log("event 'tabchange' fired. oldTabIndex = '" + event["prevTab"] + "', newTabIndex = '" + event["currentTab"] + "'")
 			
@@ -102,7 +105,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		});
 		
 		//Покажем выбранный таб
-		thisObj.DOMElement.currentTab = thisObj.currentTab;
+		thisObj.DOMElement.currentTab = thisObj._currentTab;
 	}
 }
 Object.inherit(WATabs, ui.WAElement);
@@ -121,17 +124,17 @@ WATabs.prototype.microdataType = "onlifeschema.org/WATabs";
  */
 WATabs.prototype.showTab = function(newValue) {
 	var thisObj = this,
-		oldValue = thisObj.currentTab,
+		oldValue = thisObj._currentTab,
 		ev = new CustomEvent("tabchange", {bubbles : true, cancelable : true});
-	if(newValue >= thisObj.subTabs.length) {
-		//console.error("new tab index value too must newValue = '" + newValue + "'. Max: '" + (thisObj.subTabs.length - 1) + "'");
-		newValue = thisObj.subTabs.length - 1;
+	if(newValue >= thisObj._subTabs.length) {
+		//console.error("new tab index value too must newValue = '" + newValue + "'. Max: '" + (thisObj._subTabs.length - 1) + "'");
+		newValue = thisObj._subTabs.length - 1;
 	}
 	else if(newValue < 0) {
 		newValue = 0;
 	}
 	
-	thisObj.currentTab = ev["currentTab"] = newValue;
+	thisObj._currentTab = ev["currentTab"] = newValue;
 	ev["prevTab"] = oldValue;
 	
 	thisObj.DOMElement.dispatchEvent(ev)
@@ -148,18 +151,18 @@ WATabs.prototype.initTabsSpetialProperties = function(_element) {
 	Object.defineProperties(_element, {
 		"currentTab" : {
 			"get" : function() {
-				return thisObj.currentTab;
+				return thisObj._currentTab;
 			},
 			"set" : function(newValue) {
 				if(!isNaN(newValue = parseInt(newValue))) {
 					thisObj.showTab(newValue);
 				}
-				return thisObj.currentTab;
+				return thisObj._currentTab;
 			}
 		},
 		"tabCount" : {
 			"get" : function() {
-				return thisObj.tabsCount;
+				return thisObj._tabsCount;
 			}
 		}
 	});
