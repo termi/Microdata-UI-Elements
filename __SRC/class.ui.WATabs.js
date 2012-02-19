@@ -53,7 +53,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.initTabsSpetialProperties(thisObj.DOMElement);
 		
 		//Получим ссылку на контейнер табов
-		thisObj._subTabs = Array.from(thisObj.properties["tab"]);
+		thisObj._subTabs = Array.from(thisObj.DOMElement.properties["tab"]);
 		thisObj._tabsCount = thisObj._subTabs.length;
 			
 		thisObj._subTabs.forEach(function(tabEl, _currentIndex){
@@ -75,6 +75,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 			})
 			tabEl.addEventListener(ui.EventTypes.ON_HIDE, function(event) {
 				this.classList.remove("select");
+				event.stopPropagation();
 				//return false;
 			})
 		});
@@ -88,7 +89,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 			//console.log("event 'tabchange' fired. oldTabIndex = '" + event["prevTab"] + "', newTabIndex = '" + event["currentTab"] + "'")
 			
 			if(prevTab)prevTab.dispatchEvent(new CustomEvent(ui.EventTypes.ON_HIDE, {bubbles : false, cancelable : true}));
-			if(newTab)newTab.dispatchEvent(new CustomEvent(ui.EventTypes.ON_SHOW, {bubbles : false, cancelable : true}));
+			if(newTab)newTab.dispatchEvent(new CustomEvent(ui.EventTypes.ON_SHOW, {bubbles : true, cancelable : true}));
 			
 			//Предотвращяем всплытие события, для того, чтобы контейнер не получал ложного срабатывания
 			event.stopPropagation();

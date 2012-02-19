@@ -2,7 +2,11 @@
 
 if(global["ResourceManager"])return;//Avoid recreating
 
-var ResourceManager = global["ResourceManager"] = new function() {
+var ResourceManager = global["ResourceManager"] = new
+/**
+ * @constructor
+ */
+function() {
 	var thisObj = this;
 	
 /* PRIVATE */
@@ -11,7 +15,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 		/** @type {string} @const */
 		__SCRIPT_ID_PREFIX__ = "scr" + randomString(5),
 		/** @type {string} @const */
-		__DEFAULT_APPLICATION_FILE__ = ".json"
+		__DEFAULT_APPLICATION_FILE__ = "index.json";
 
 /* PRIVATE | FUNCTIONS */
 	function _processUrl(url, origin) {
@@ -26,8 +30,10 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			el.parentNode.removeChild(el);//Удалим старый элемент
 		
 		document.head.appendChild(
-			document.createElement(_tagName)
+			el = document.createElement(_tagName)
 			).id = _id;
+		
+		return el
 	}
 		
 /* PUBLIC */
@@ -42,22 +48,26 @@ var ResourceManager = global["ResourceManager"] = new function() {
 	 * @param {string} _src Путь до скрипта
 	 * @param {Function} _onLoad Callback по загрузки скрипта
 	 * @param {string} _id Уникальный идентификатор элемента
+	 * @return {HTMLScriptElement}
 	 */
 	thisObj.createScript = function(_src, _onLoad, _id) {
 		var script = _deleteCreateAndAppendElement("script", _id);
 		script.onload = _onLoad;
 		script.src = _src;
+		return script;
 	}
 	
 	/**
 	 * Функция создаёт стиль
 	 * @param {string} _src Путь до скрипта
 	 * @param {string} _id Уникальный идентификатор элемента
+	 * @return {HTMLLinkElement}
 	 */
 	thisObj.createStyle = function(_src, _id) {
 		var link = _deleteCreateAndAppendElement("link", _id);
 		link.setAttribute("rel", "stylesheet");
 		link.setAttribute("href", _src);
+		return link;
 	}
 	
 	/**
@@ -72,18 +82,13 @@ var ResourceManager = global["ResourceManager"] = new function() {
 		var isURN = (url.substr(0, _urnPrefix_length) === _urnPrefix);
 		
 		if(isURN) {
-			//Удалим префикс
-			url = url.substr(_urnPrefix_length);
-			//Заменяем двоеточия на слеши
-			url = url.replace(":", "/");
-			
-			if(url.substr(0, 9) === "templates") {//Если это шаблон
+			if(url.substr(_urnPrefix_length, 9) === "templates") {//Если это шаблон
 				//thisObj.loadTemplate(url, onDone, onError);
 				//TODO::
 				onDone("")
 				return;
 			}
-			else if(url.substr(0, 4) === "apps") {//Если это приложение
+			else if(url.substr(_urnPrefix_length, 4) === "apps") {//Если это приложение
 				thisObj.loadApplication(url, onDone, onError);
 				return;
 			}
@@ -107,7 +112,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			//Удалим префикс
 			url = url.substr(_urnPrefix_length);
 			//Заменяем двоеточия на слеши
-			url = url.replace(":", "/");
+			url = url.replace(/\:/g, "/");
 		}
 		
 		ajax(url, function(jsonText) {
@@ -148,7 +153,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			//Удалим префикс
 			url = url.substr(_urnPrefix_length);
 			//Заменяем двоеточия на слеши
-			url = url.replace(":", "/");
+			url = url.replace(/\:/g, "/");
 		}
 		
 		//Проверим, есть ли у меня закешированное приложение
@@ -176,12 +181,12 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			//Загрузим необходимые css-файлы
 			cssArray = json.css;
 			if(cssArray)cssArray.forEach(function(css, key) {
-				thisObj.createStyle(_processUrl(css, url, "style_" + applicationId + "_" + key));
+				thisObj.createStyle(_processUrl(css, url), null, "style_" + applicationId + "_" + key);
 			})
 			//Загрузим необходимые js-файлы
 			jsArray = json.js;
 			if(jsArray)jsArray.forEach(function(js, key) {
-				thisObj.createScript(_processUrl(js, url, "script_" + applicationId + "_" + key));
+				thisObj.createScript(_processUrl(js, url), null, "script_" + applicationId + "_" + key);
 			})
 			
 			//Основной js-файл приложения должен экспортировать метод init(DOMElement) в глобальный объект export
@@ -220,7 +225,7 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			//Удалим префикс
 			url = url.substr(_urnPrefix_length);
 			//Заменяем двоеточия на слеши
-			url = url.replace(":", "/");
+			url = url.replace(/\:/g, "/");
 		}
 		
 		ajax(url, onDone, onError);
@@ -234,16 +239,16 @@ var ResourceManager = global["ResourceManager"] = new function() {
 	 * @param {string} url
 	 * @param {function(String)} onDone
 	 * @param {function(XMLHttpRequest)} onError
-	 * @param {boolean=} isPost [default=true] POST?
+	 * @param {boolean=} isPost [default=false] POST?
 	 */
 	function(url, onDone, onError, isPost) {//AJAX
-		if(isPost == void 0)isPost = true;
+		if(isPost == void 0)isPost = false;
 		
 		var params;
 		
 		if(isPost) {
-			params = url.splite("?")[1];
-			url = url.splite("?")[0];
+			params = url.split("?")[1];
+			url = url.split("?")[0];
 		}
 		
 		SendRequest(url, params || "",
@@ -253,5 +258,12 @@ var ResourceManager = global["ResourceManager"] = new function() {
 			onError,
 			{"post" : isPost}
 		);
+	},
+	/**
+	 * @param {Array.<string>} resourses
+	 * @param {Function} callback
+	 */
+	function (resourses, callback) {//LoadResourses
+		//TODO::
 	}
 );

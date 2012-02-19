@@ -1,6 +1,8 @@
 ﻿/*
  * @requared ui.WAElement
+ 
  */
+//Not now requared URL (http://dvcs.w3.org/hg/url/raw-file/tip/Overview.html) http://static.onlf.ru/js/URL.js
 
 ;(function(global) {//closure
 
@@ -11,37 +13,61 @@ var ui = global.ui;
  * Microdata type - onlifeschema.org/WAForm
  * @constructor
  * @extends {ui.WAElement}
- * @param {...} _params Params list the same as in ui.WAElement
+ * @param {HTMLFormElement} _element Form-Элемент, который будет ассоциироватся с данным объектом
+ * @param {...} _params
  */
-var WAForm = ui.WAForm = function (_params) {
+var WAForm = ui.WAForm = function (_element, _params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
 	WAForm.superclass.constructor.apply(thisObj, arguments);
 	
 /* PRIVATE */
 	function _formOnSubmit (event) {
-		var form = event.target,
-			action = form.action,
-			params = action.split("?");//TODO:: правильно обрабатывать строку вида http://examle.com?param1=value1&param2=?&param3... <-- 2 раза знак "?"
+		var _form = event.target;
 		
-		//action - строка в формате paramName1={[inputName1]}&paramName2={[inputName2]}&...
-		params = params.replace(/\{\[(.*?)\]\}/gi, function(str, p1) {
-			if(form[p1])return form[p1].value;
-			else "";
-		})
-		if(global.DEBUG)console.log(action + "?" + params);
+		if(_form.tagName.toUpperCase() != "FORM")_form = _form["form"];
+		
+		if(!_form) {
+			event.stopPropagation();
+			event.preventDefault();
+			return false;
+		}
+		
+		var action = _form.action;
+		
+		if(action) {
+			var params = action.split("?")[1];//TODO:: правильно обрабатывать строку вида http://examle.com?param1=value1&param2=?&param3... <-- 2 раза знак "?"
+		
+			//action - строка в формате paramName1={[inputName1]}&paramName2={[inputName2]}&...
+			if(params)params = params.replace(/\{\[(.*?)\]\}/gi, function(str, p1) {
+				if(_form[p1])return _form[p1].value;
+				else return "";
+				//TODO::
+			})
+			else {
+				var j = -1,
+					input;
+				while(input = _form[++j]) {
+					params += ((j == 0 ? "" : "&") + input.name + "=" + input.value)
+				}
+				//TODO::
+			}
+			if(global.DEBUG)console.log(action + "?" + params);
+		}
+		
 		//TODO:: Отправляем данные
 		
+		
 		//Предотвращяем всплытие события, для того, чтобы контейнер не получал ложного срабатывания
-		event.stopPropagation();
+		//event.stopPropagation();
 		event.preventDefault();
 		return false;
 	}
 	
 	
 /* PUBLIC */
-	/** Формы. {Array.<FormElement>} */
-	thisObj.forms = null;
+	/* Формы. {Array.<FormElement>} * /
+	thisObj.forms = null;*/
 	
 
 /* PUBLIC | FUNCTIONS */	
@@ -62,15 +88,14 @@ var WAForm = ui.WAForm = function (_params) {
 		
 		var tmp;
 
-		thisObj.forms = $A(thisObj.properties["form"]);
+		/*thisObj.forms = Array.from(thisObj.properties["form"]);
 		
 		thisObj.forms.forEach(function(form){
 			form.onsubmit = _formOnSubmit;
-		});
+		});*/
 		
 		//Подпишемся на события::
-		//Сообщения об изменеии thisObj.DOMElement.currentTab
-		thisObj.DOMElement.addEventListener("submit", _formOnSubmit)
+		thisObj.DOMElement.addEventListener("submit", _formOnSubmit, false)
 		
 	}
 }

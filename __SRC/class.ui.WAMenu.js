@@ -29,16 +29,18 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		var ev = new CustomEvent(thisObj.menuEvent, {bubbles : true, cancelable : true, detail : elemAttrValue})
 		
 		//Создаём событие, которое "всплывёт" до нужного обработчика или до document
-		thisObj.DOMElement.dispatchEvent(ev)
+		thisObj.DOMElement.dispatchEvent(ev);
+		
+		return false;
 	});
 
 
 /* PUBLIC */	
-	/**
+	/*
 	 * Пункты меню
 	 * @type {Array.<Node>}
 	 */
-	thisObj.menuItems;
+	//thisObj.menuItems;
 
 	thisObj.menuEvent = thisObj.DOMElement.getAttribute(WAMenu.menuEventAttribute);
 	
@@ -60,17 +62,32 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		}
 		
 		//Menu event listener init
-		thisObj.DOMElement.addEventListener("click", _menuItemsOnClick, false);
+		var _dispatcherEventName = 
+			thisObj.DOMElement.getAttribute(WAMenu.menuEventDispatcher) || 
+			WAMenu.menuEventDefaultDispatchers[thisObj.DOMElement.tagName.toUpperCase()] ||
+			WAMenu.menuEventDefaultDispatchers["*"];
+		
+		thisObj.DOMElement.addEventListener(_dispatcherEventName, _menuItemsOnClick, false);
 		
 		//Alias
-		thisObj.menuItems = thisObj.properties["menuItem"];
+		//thisObj.menuItems = thisObj.DOMElement.properties["menuItem"];
 	}
 }
 Object.inherit(WAMenu, ui.WAElement);
 
 /* STATIC */
+/** @const */
 WAMenu.menuEventAttribute = "data-menu-event";
+/** @const */
 WAMenu.menuEventDetailAttribute = "data-menu-detail";
+/** @const */
+WAMenu.menuEventDispatcher = "data-trigger-event";
+/** Default `menuEventDispatcher` values for tagName
+ * @const @enum {string} */
+WAMenu.menuEventDefaultDispatchers = {
+	"*" : "click",
+	"FORM" : "submit"
+}
 
 /* PROTOTYPE */
 /**

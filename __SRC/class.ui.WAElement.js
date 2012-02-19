@@ -1,10 +1,34 @@
-﻿/*
+﻿// ==ClosureCompiler==
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// @warning_level VERBOSE
+// @jscomp_warning missingProperties
+// @output_file_name class.uiWAElement.js
+// @check_types
+// ==/ClosureCompiler==
+/*
  * @requared MicroformatError
  * @requared MicroformatConstructors
  * @requared ui.EventTypes (enum.ui.EventTypes.js)
  */
 
+//GCC DEFINES START
+/** @define {boolean} */
+var IS_DEBUG = true;
+//GCC DEFINES END
+ 
 ;(function(global) {//closure
+
+"use strict";
+
+var _urnPrefix = "urn:onlife:",
+	_urnPrefix_length = _urnPrefix.length,
+	/** @type {string} @const */
+	__SCRIPT_ID_PREFIX__ = "scr" + randomString(5),
+	/** @type {string} @const */
+	__DEFAULT_APPLICATION_FILE__ = "index.json";
+
+/** @const @type {boolean} */
+var DEBUG = IS_DEBUG && !!(window && window.console);
 
 var ui = global.ui = global.ui || {},
 	_isEmptyElement = function(element) {
@@ -19,7 +43,13 @@ var ui = global.ui = global.ui || {},
 		
 		return isEmpty;
 	},
-	_forEach = Function.prototype.call.bind(Array.prototype.forEach);
+	_forEach = Function.prototype.call.bind(Array.prototype.forEach),
+	_hasOwnProperty = Function.prototype.call.bind(Object.prototype.hasOwnProperty),
+	/** 
+	 * @type {string} eventListners prefix
+	 * @const
+	 */
+	_eventListnersPrfx = "@";
 
 /**
  * Класс, общий для всех UI-объектов
@@ -28,8 +58,8 @@ var ui = global.ui = global.ui || {},
  * @param {ui.WAElement|ui.WebApplication} _owner Владелей этого компонента
  */
 var WAElement = ui["WAElement"] = function(_element, _owner) {
-	if(global.DEBUG) {
-		if(typeof _element == undefType)console.error("[ui.WAElement] new:: Элемент должен быть задан")
+	if(DEBUG) {
+		if(_element == void 0)console.error("[ui.WAElement] new:: Элемент должен быть задан")
 		else if(typeof _element != "object")console.error("[ui.WAElement] new:: Элемент должен типа Object")
 	}
 	
@@ -44,7 +74,7 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 /* OPTIONS */
 	/** Объявление объекта для опций
 	 * @type {Object} */
-	thisObj.options = {};
+	thisObj.settings = {};
 	
 /* PROTECTED */
 
@@ -54,8 +84,8 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 	thisObj.DOMElement = _element;
 	
 	/** Components of this component
-	 * @type {HTMLPropertiesCollection} */
-	thisObj.сomponents;
+	 * @type {Array.<Node>} */
+	thisObj.components;
 	
 	/**
 	 * @type {Node} */
@@ -85,7 +115,7 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 		/*\ TODO:: Переделать START \*/
 		//Пробуем получить уникальный идентификатор ресурса
 		var urn = _element.getAttribute("itemid");
-		if(urn && (urn.substr(0, 15) === "urn:onlife:apps") && !thisObj.templateLoaded) {//Проверим на наличие и, что это уникальный идентификатор ресурса
+		if(urn && (urn.substr(0, _urnPrefix_length) === _urnPrefix) && !thisObj.templateLoaded) {//Проверим на наличие и, что это уникальный идентификатор ресурса
 			
 			ResourceManager.loadResource(urn, function(jsonOrText) {
 			
@@ -170,46 +200,22 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 					
 		//Если у элемента есть id - назначаем его, нету - рандомная строка
 		thisObj.id = _element.id || (_element.id = randomString(9) + "_");
-		
-		/** Components of this component
-		 * @type {Array.<Node>} */
-		thisObj.properties = _element["properties"];
-		
+				
 		//Пройдёмся по всем под-компонентам и инициализируем их
-		thisObj.сomponents = Array.from(thisObj.properties["component"]);
-		_forEach(thisObj.сomponents, function(_component) {
-			var _itemType = _component.getAttribute("itemtype");
-			if(_itemType === null)
-				throw new MicroformatError("itemscope attribute need");
-			
-			_itemType.split(" ").forEach(function(type) {
-				var constructor = MicroformatConstructors[type];
-				if(!constructor)console.error("unkonown component type : " + type);
-				else {
-					var newComponentBehavior = new constructor(_component, thisObj);
-					//TODO:: Отложить init и вызывать его только тогда, когда он действительно необходим
-					newComponentBehavior.init();
-				}
-			})
-		})		
+		thisObj.initComponents(thisObj.DOMElement);
 		
 		//Подпишемся на события
-		_element.addEventListener(ui.EventTypes.ON_SHOW, function(event) {
-			//Если компонент был скрыт с помощью style - уберём скрытие
-			var style = _element.getAttribute("style");
-			if(style) {
-				style = style.replace(": ", ":").replace(" :", ":").replace("display:none", "");
-				_element.setAttribute("style", style);
-			}
-			
-			this.classList.add("select");
-		})
-		_element.addEventListener(ui.EventTypes.ON_HIDE, function(event) {
-			this.classList.remove("select");
-		})
+		// add quickly events to the node
+		for (var key in this.events) {
+			// add the listener ... 
+			// NOTE: nothing to bind, no duplicated entries either
+			_element.addEventListener(key, this, false);
+		}
 		
-		//For debug
-		_element.__uielement__ = thisObj;
+		//Alias
+		thisObj.properties = thisObj.DOMElement.properties;
+
+		if(DEBUG)_element.__uielement__ = thisObj;
 		
 		return thisObj.isInit = true;
 	}
@@ -239,6 +245,51 @@ WAElement.formatTest = function(_waElement) {
 
 WAElement._nextUid = 0;
 /* PROTOTYPE */
+/* handleEvent START*/
+// Idea from http://webreflection.blogspot.com/2012/01/introducing-objecthandler.html & http://ajaxian.com/archives/an-alternative-way-to-addeventlistener
+WAElement.prototype.handleEvent = function(e) {
+	var evntListnerName = e.type,
+		_notPpreventCapture = true;
+	while((evntListnerName = _eventListnersPrfx + evntListnerName) in this) {
+		(this[evntListnerName] || []).forEach(function(callback, i, stack) {
+			if(_notPpreventCapture) {
+				_notPpreventCapture = callback.call(
+					this,
+					e,
+					callback,
+					this
+				)
+			}
+		}, this);
+	}
+}
+WAElement.prototype.addEvent = function(_eventName, _handle) {
+	_eventName = _eventListnersPrfx + _eventName;
+	if(_hasOwnProperty(this, _eventName))this[_eventName].push(_handle);
+	else if(_eventName in this)this[_eventListnersPrfx + _eventName] = [_handle];
+	else this[_eventName] = [_handle];
+}
+WAElement.prototype.removeEvent = function(_eventName) {
+	//TODO::
+}
+/* handleEvent END*/
+WAElement.prototype.addEvent.call(WAElement.prototype, ui.EventTypes.ON_SHOW, function(event) {
+	//Если компонент был скрыт с помощью style - уберём скрытие
+	var thisObj = this,
+		style = thisObj.DOMElement.getAttribute("style");
+	if(style) {
+		style = style.replace(": ", ":").replace(" :", ":").replace("display:none", "");
+		thisObj.DOMElement.setAttribute("style", style);
+	}
+	
+	thisObj.DOMElement.classList.add("select");
+})
+WAElement.prototype.addEvent.call(WAElement.prototype, ui.EventTypes.ON_HIDE, function(event) {
+	this.DOMElement.classList.remove("select");
+	event.stopPropagation();//Stop `hide` event propagation
+})
+
+
 
 /**
  * Тип разметки по микроформату или микродате
@@ -250,14 +301,48 @@ WAElement.prototype.microdataType = "onlifeschema.org/WAElement";
  * @this {ui.WAElement}
  */
 WAElement.prototype.show = function() {
-	this.DOMElement.dispatchEvent(new CustomEvent("show", {bubbles : false}));
+	this.DOMElement.dispatchEvent(new CustomEvent(ui.EventTypes.ON_SHOW, {bubbles : false}));
 }
 /**
  * Скрыть элемент.
  * @this {ui.WAElement}
  */
 WAElement.prototype.hide = function() {
-	this.DOMElement.dispatchEvent(new CustomEvent("hide", {bubbles : false}));
+	this.DOMElement.dispatchEvent(new CustomEvent(ui.EventTypes.ON_HIDE, {bubbles : false}));
 }
+/**
+ * Components init
+ * @this {Node} node DOM Element with properties["component"]
+ */
+WAElement.prototype.initComponents = function __initComponents(node) {
+	var _components = node.properties["component"],
+		thisObj = this;
+	
+	if(!_components || _components.length === 0)return;
+	
+	var i = -1,
+		component,
+		_itemType;
+	while(component = _components[++i]) {
+		if(!component.hasAttribute("itemscope"))continue;
+		
+		_itemType = component.getAttribute("itemtype");
+		
+		//TODO:: Create multitype support then it approve in Spec
+		//_itemType.split(" ").forEach(function(type) { })
+			var constructor = MicroformatConstructors[_itemType];
+			if(!constructor) {
+				console.info("unkonown component type : " + _itemType);
+				__initComponents.call(thisObj, component);
+			}
+			else {
+				var newComponentBehavior = new constructor(component, thisObj);
+				//TODO:: Отложить init и вызывать его только тогда, когда он действительно необходим
+				newComponentBehavior.init();
+			}
+		
+	}
+}
+
 
 })(window);
