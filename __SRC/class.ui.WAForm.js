@@ -6,7 +6,8 @@
 
 ;(function(global) {//closure
 
-var ui = global.ui;
+// IMPORT
+var ui = global["ui"] = global["ui"] || {};
 
 /**
  * Класс описывающий поведение контейнера табов
@@ -16,10 +17,10 @@ var ui = global.ui;
  * @param {HTMLFormElement} _element Form-Элемент, который будет ассоциироватся с данным объектом
  * @param {...} _params
  */
-var WAForm = ui.WAForm = function (_element, _params) {
+var WAForm = ui["WAForm"] = function(_element, _params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
-	WAForm.superclass.constructor.apply(thisObj, arguments);
+	WAForm["superclass"].constructor.apply(thisObj, arguments);
 	
 /* PRIVATE */
 	function _formOnSubmit (event) {
@@ -78,11 +79,11 @@ var WAForm = ui.WAForm = function (_element, _params) {
 	/** Ссылка на метод init родительского класса
 	 * @private
 	 * @type {Function}	 */
-	var superInit = thisObj.init;//Сохраняем ссылку
+	var superInit = thisObj["init"];//Сохраняем ссылку
 	/**
 	 * Инициализация
 	 */
-	thisObj.init = function() {
+	thisObj["init"] = function() {
 		//Вызываем метод родительского класса
 		if(!superInit.apply(thisObj, arguments))return false;
 		
@@ -99,7 +100,7 @@ var WAForm = ui.WAForm = function (_element, _params) {
 		
 	}
 }
-Object.inherit(WAForm, ui.WAElement);
+Object["inherit"](WAForm, ui["WAElement"]);
 /* STATIC */
 
 /* PROTOTYPE */

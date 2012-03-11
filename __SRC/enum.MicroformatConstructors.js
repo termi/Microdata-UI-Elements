@@ -20,7 +20,8 @@ global["MicroformatConstructors"] = {
 	"onlifeschema.org/WATabs" : ui["WATabs"],
 	"onlifeschema.org/WAMenu" : ui["WAMenu"],
 	"onlifeschema.org/WAForm" : ui["WAForm"],
-	"schema.org/ImageGallery" : ui["ImageGallery"]
+	"schema.org/ImageGallery" : ui["ImageGallery"],
+	"onlifeschema.org/SlideShow" : ui["SlideShow"]
 }
 
 })(window);

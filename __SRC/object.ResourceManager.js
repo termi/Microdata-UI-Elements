@@ -10,19 +10,13 @@ function() {
 	var thisObj = this;
 	
 /* PRIVATE */
-	var _urnPrefix = "urn:onlife:",
-		_urnPrefix_length = _urnPrefix.length,
+	var _urnPrefix = "urn",
 		/** @type {string} @const */
 		__SCRIPT_ID_PREFIX__ = "scr" + randomString(5),
 		/** @type {string} @const */
 		__DEFAULT_APPLICATION_FILE__ = "index.json";
 
 /* PRIVATE | FUNCTIONS */
-	function _processUrl(url, origin) {
-		return url.charAt(0) == "/" ? url :
-			(/^http(s?)\:\/\//ig).test(url) ? url :
-			(origin + "/" + url);
-	}
 	
 	function _deleteCreateAndAppendElement(_tagName, _id) {
 		var el;
@@ -40,7 +34,7 @@ function() {
 	/**
 	 * Массив приложений
 	 */
-	thisObj.applications = {};
+	thisObj["applications"] = {};
 
 /* PUBLIC | FUNCTIONS */
 	/**
@@ -76,27 +70,34 @@ function() {
 	 * @param {string} url Путь к ресурсу
 	 * @param {function(responseText: (string|Object))} onDone Callback-функция вызывается после получения данных. В первом параметре передаётся полученный текст или ссылка на загруженное приложение
 	 * @param {Function=} onError Callback-функция вызывается при ошибке в получении данных
+	 * @param {Function=} _next_callbacl Не указывается напрямую. Точка возврата
 	 */
-	thisObj.loadResource = function(url, onDone, onError) {
-		//Уникальный идентификатор ресурса должен начинатся на "urn:onlife:"
-		var isURN = (url.substr(0, _urnPrefix_length) === _urnPrefix);
+	thisObj.loadResource = function(url, onDone, onError, _next_callbacl) {
+		//Уникальный идентификатор ресурса должен начинатся на "urn:"
+		var urns = url.split(":"),
+			isURN = urns[0] === _urnPrefix,
+			realUrl = url.substr(urns[0].length + urns[1].length + 2);
 		
-		if(isURN) {
-			if(url.substr(_urnPrefix_length, 9) === "templates") {//Если это шаблон
-				//thisObj.loadTemplate(url, onDone, onError);
+		if(_next_callbacl) {
+			_next_callbacl(url, onDone, onError, realUrl);
+			return;
+		}
+		
+		if(isURN)switch(urns[1]) {
+			case "templates":
+				//thisObj.loadTemplate(url, onDone, onError, urns[urns.length - 1]);
 				//TODO::
-				onDone("")
-				return;
-			}
-			else if(url.substr(_urnPrefix_length, 4) === "apps") {//Если это приложение
-				thisObj.loadApplication(url, onDone, onError);
-				return;
-			}
+				onDone("", realUrl)
+			break;
+			
+			case "app":
+				thisObj.loadApplication(url, onDone, onError, realUrl);
+			break;
 		}
 		else {
 			//TODO::
-			onDone("")
-			//thisObj.loadTextResource(url, onDone, onError);
+			onDone("", realUrl)
+			//thisObj.loadTextResource(url, onDone, onError, urns[urns.length - 1]);
 		}
 	}
 	
@@ -105,17 +106,15 @@ function() {
 	 * @param {string} url Путь к ресурсу
 	 * @param {function(responseText: string)} onDone Callback-функция вызывается после получения данных. В первом параметре передаётся полученный текст
 	 * @param {Function=} onError Callback-функция вызывается при ошибке в получении данных
+	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
-	thisObj.loadTemplate = function(url, onDone, onError) {
-		var isURN = (url.substr(0, _urnPrefix_length) === _urnPrefix);
-		if(isURN) {
-			//Удалим префикс
-			url = url.substr(_urnPrefix_length);
-			//Заменяем двоеточия на слеши
-			url = url.replace(/\:/g, "/");
+	thisObj.loadTemplate = function(url, onDone, onError, _sys_realUrl) {
+		if(!_sys_realUrl) {
+			thisObj.loadResource(url, onDone, onError, thisObj.loadTemplate);
+			return;
 		}
 		
-		ajax(url, function(jsonText) {
+		ajax(_sys_realUrl, function(jsonText) {
 			var json, html, cssArray, jsArray;
 			try {
 				json = JSON.parse(jsonText);
@@ -126,18 +125,20 @@ function() {
 			}
 			//Ожидаем JSON определённого формата
 			//Загрузим необходимые css-файлы
-			cssArray = json.css;
+			cssArray = json["css"];
 			if(cssArray)cssArray.forEach(function(css) {
 				thisObj.createStyle(css);
 			})
 			
-			html = json.html;
-			if(html)onDone(html)
+			html = json["html"];
+			if(html)onDone(html, _sys_realUrl)
 			else {
 				console.error("No 'html' in json object");
 				onError();
 			}
-		}, onError);
+		}, function() {
+			onError("Error", _sys_realUrl);
+		});
 	}
 	
 	
@@ -146,71 +147,40 @@ function() {
 	 * @param {string} url Путь к ресурсу
 	 * @param {function(responseText: Object)} onDone Callback-функция вызывается после получения данных. В первом параметре передаётся ссылка на загруженное приложение
 	 * @param {Function=} onError Callback-функция вызывается при ошибке в получении данных
+	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
-	thisObj.loadApplication = function(url, onDone, onError) {
-		var isURN = (url.substr(0, _urnPrefix_length) === _urnPrefix);
-		if(isURN) {
-			//Удалим префикс
-			url = url.substr(_urnPrefix_length);
-			//Заменяем двоеточия на слеши
-			url = url.replace(/\:/g, "/");
+	thisObj.loadApplication = function(url, onDone, onError, _sys_realUrl) {
+		if(!_sys_realUrl) {
+			thisObj.loadResource(url, onDone, onError, thisObj.loadApplication);
+			return;
 		}
 		
 		//Проверим, есть ли у меня закешированное приложение
-		if(thisObj.applications[url]) {
-			onDone(thisObj.applications[url]);
+		if(thisObj["applications"][_sys_realUrl]) {
+			onDone(thisObj["applications"][_sys_realUrl], _sys_realUrl);
 			return;
 		}
 	
-		ajax(url + "/" + __DEFAULT_APPLICATION_FILE__, function(jsonText) {
-			var json, html, cssArray, jsArray, applicationId;
-			try {
-				json = JSON.parse(jsonText);
-			}
-			catch(e) {
-				console.error("Can't parse JSON | error message: " + e.message);
-				return false;
-			}
+		ajax(_sys_realUrl + "/" + __DEFAULT_APPLICATION_FILE__, function(jsonText) {
+			var json;
 			
-			//TODO:: 
-			//1. Убрать отсюда разбор JSON и переместить его в конструктор Application
-			//2. Передавать JSON в конструктор Application
-			
-			applicationId = json.id;
-			//Ожидаем JSON определённого формата
-			//Загрузим необходимые css-файлы
-			cssArray = json.css;
-			if(cssArray)cssArray.forEach(function(css, key) {
-				thisObj.createStyle(_processUrl(css, url), null, "style_" + applicationId + "_" + key);
-			})
-			//Загрузим необходимые js-файлы
-			jsArray = json.js;
-			if(jsArray)jsArray.forEach(function(js, key) {
-				thisObj.createScript(_processUrl(js, url), null, "script_" + applicationId + "_" + key);
-			})
-			
-			//Основной js-файл приложения должен экспортировать метод init(DOMElement) в глобальный объект export
-			if(json.app)thisObj.createScript(_processUrl(json.app, url), function() {
-				//onload
-				
-				var exports = global["exports"];
-				if(!exports) {
-					console.info("Application '" + applicationId + "' has no exported functions");
+			if(typeof jsonText != "object") {
+				try {
+					json = JSON.parse(jsonText);
 				}
-				else {
-					Object.append(json, exports);
-					thisObj.applications[url] = json;
-					
-					delete global["exports"];
-					global["exports"] = exports = null;
+				catch(e) {
+					console.error("Can't parse JSON | error message: " + e.message);
+					return false;
 				}
-				if(onDone)onDone(json);
-				
-			}, applicationId ? (__SCRIPT_ID_PREFIX__ + applicationId) : 0);
+			}
+			else json = jsonText;
 			
+			thisObj["applications"][_sys_realUrl] = json;
 			
-			
-		}, onError);
+			onDone(json, _sys_realUrl);
+		}, function() {
+			onError("Error", _sys_realUrl);
+		});
 	}
 	
 	/**
@@ -218,17 +188,19 @@ function() {
 	 * @param {string} url Путь к ресурсу
 	 * @param {function(responseText: string)} onDone Callback-функция вызывается после получения данных
 	 * @param {Function=} onError Callback-функция вызывается при ошибке в получении данных
+	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
-	thisObj.loadTextResource = function(url, onDone, onError) {
-		var isURN = (url.substr(0, _urnPrefix_length) === _urnPrefix);
-		if(isURN) {
-			//Удалим префикс
-			url = url.substr(_urnPrefix_length);
-			//Заменяем двоеточия на слеши
-			url = url.replace(/\:/g, "/");
+	thisObj.loadTextResource = function(url, onDone, onError, _sys_realUrl) {
+		if(!_sys_realUrl) {
+			thisObj.loadResource(url, onDone, onError, thisObj.loadTextResource);
+			return;
 		}
 		
-		ajax(url, onDone, onError);
+		ajax(_sys_realUrl, function(res) {
+			onDone(res, _sys_realUrl);
+		}, function() {
+			onError("Error", _sys_realUrl);
+		});
 	}
 };
 
@@ -251,19 +223,12 @@ function() {
 			url = url.split("?")[0];
 		}
 		
-		SendRequest(url, params || "",
+		window["SendRequest"](url, params || "",
 			function(xhr) {
 				onDone(xhr.responseText);
 			},
 			onError,
 			{"post" : isPost}
 		);
-	},
-	/**
-	 * @param {Array.<string>} resourses
-	 * @param {Function} callback
-	 */
-	function (resourses, callback) {//LoadResourses
-		//TODO::
 	}
 );

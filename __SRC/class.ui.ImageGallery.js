@@ -4,7 +4,8 @@
 
 ;(function(global) {//closure
 
-var ui = global.ui;
+// IMPORT
+var ui = global["ui"] = global["ui"] || {};
 
 /**
  * Класс описывающий поведение контейнера табов
@@ -18,7 +19,7 @@ var ui = global.ui;
 var ImageGallery = ui["ImageGallery"] = function (_params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
-	ImageGallery.superclass.constructor.apply(thisObj, arguments);
+	ImageGallery["superclass"].constructor.apply(thisObj, arguments);
 	
 /* PUBLIC */
 	/** Превьюшки. Список Node's @type {PropertyNodeList} */
@@ -38,11 +39,11 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 	/** Ссылка на метод init родительского класса
 	 * @private
 	 * @type {Function}	 */
-	var superInit = thisObj.init;//Сохраняем ссылку
+	var superInit = thisObj["init"];//Сохраняем ссылку
 	/**
 	 * Инициализация
 	 */
-	thisObj.init = function() {
+	thisObj["init"] = function() {
 		//Вызываем метод родительского класса
 		if(superInit.apply(thisObj, arguments) === false)return false;
 		
@@ -68,21 +69,21 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 			}
 			if(newImage) {
 				newImage.classList.add("select");
-				thisObj.currentImage = Array.from(thisObj.images).indexOf(newImage);
+				thisObj.currentImage = Array["from"](thisObj.images).indexOf(newImage);
 			}
 			
-			if(thisObj.currentImage < 0 || !newImage)thisObj.currentImage = 0, newImage = Array.from(thisObj.images)[0];
-			else if(thisObj.currentImage >= thisObj.imageCount)thisObj.currentImage = thisObj.imageCount - 1, newImage = Array.from(thisObj.images)[thisObj.currentImage];
+			if(thisObj.currentImage < 0 || !newImage)thisObj.currentImage = 0, newImage = Array["from"](thisObj.images)[0];
+			else if(thisObj.currentImage >= thisObj.imageCount)thisObj.currentImage = thisObj.imageCount - 1, newImage = Array["from"](thisObj.images)[thisObj.currentImage];
 			
-			thisObj.openImage["properties"]["contentURL"][0].itemValue = newImage["properties"]["contentURL"][0].itemValue;
-			thisObj.openImage["properties"]["caption"][0].itemValue = newImage["properties"]["caption"][0].itemValue;
-			thisObj.openImage["properties"]["description"][0].itemValue = newImage["properties"]["description"][0].itemValue;
+			thisObj.openImage["properties"]["contentURL"][0]["itemValue"] = newImage["properties"]["contentURL"][0]["itemValue"];
+			thisObj.openImage["properties"]["caption"][0]["itemValue"] = newImage["properties"]["caption"][0]["itemValue"];
+			thisObj.openImage["properties"]["description"][0]["itemValue"] = newImage["properties"]["description"][0]["itemValue"];
 			
 			//Предотвращяем всплытие события, для того, чтобы контейнер не получал ложного срабатывания
 			event.stopPropagation();
 		})
 		
-		Array.from(thisObj.images).forEach(function(imageEl, _currentIndex){
+		Array["from"](thisObj.images).forEach(function(imageEl, _currentIndex){
 			/*if(!tabEl.itemType || !~tabEl.itemType.indexOf("onlifeschema.org/WATab")) {
 				throw new Error("Таб должен быть типа onlifeschema.org/WATab")
 			}*/		
@@ -99,7 +100,7 @@ var ImageGallery = ui["ImageGallery"] = function (_params) {
 		
 	}
 }
-Object.inherit(ImageGallery, ui.WAElement);
+Object["inherit"](ImageGallery, ui["WAElement"]);
 /* STATIC */
 
 /* PROTOTYPE */

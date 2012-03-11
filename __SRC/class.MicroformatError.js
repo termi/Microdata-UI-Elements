@@ -6,11 +6,10 @@
  * @extends {Error}
  * @param {...} params error params
  */
-
 var MicroformatError = global["MicroformatError"] = function(message) {
 	var thisObj = (this === global) ? new MicroformatError.F() : this;
 	
-	MicroformatError.superclass.constructor.apply(thisObj, arguments);//Do we realy need this ?
+	MicroformatError["superclass"].constructor.apply(thisObj, arguments);//Do we realy need this ?
 	
 	thisObj.name = "MicroformatError";
     thisObj.message = (message || "");
@@ -19,6 +18,7 @@ var MicroformatError = global["MicroformatError"] = function(message) {
 }
 Object.inherit(MicroformatError, Error)
 /* STATIC */
+/** @constructor */
 MicroformatError.F = function(){}//default constructor if this === window
 
 })(window);

@@ -1,10 +1,28 @@
-﻿/*
+﻿// ==ClosureCompiler==
+// @compilation_level ADVANCED_OPTIMIZATIONS
+// @warning_level VERBOSE
+// @jscomp_warning missingProperties
+// @output_file_name class.uiWAElement.js
+// @check_types
+// ==/ClosureCompiler==
+/*
  * @requared ui.WAElement
  */
 
+//GCC DEFINES START
+/** @define {boolean} */
+var IS_DEBUG = true;
+//GCC DEFINES END
+
 ;(function(global) {//closure
 
-var ui = global.ui;
+"use strict";
+
+/** @const @type {boolean} */
+var DEBUG = IS_DEBUG && !!(window && window.console);
+
+// IMPORT
+var ui = global["ui"] = global["ui"] || {};
 
 /**
  * Класс описывающий поведение контейнера табов
@@ -18,7 +36,7 @@ var ui = global.ui;
 var WATabs = ui["WATabs"] = function (_params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
-	WATabs.superclass.constructor.apply(thisObj, arguments);
+	WATabs["superclass"].constructor.apply(thisObj, arguments);
 
 /* PROTECTED */
 	/** Подтабы. Список Node's @type {Array.<Node>} */
@@ -39,11 +57,11 @@ var WATabs = ui["WATabs"] = function (_params) {
 	/** Ссылка на метод init родительского класса
 	 * @private
 	 * @type {Function}	 */
-	var superInit = thisObj.init;//Сохраняем ссылку
+	var superInit = thisObj["init"];//Сохраняем ссылку
 	/**
 	 * Инициализация
 	 */
-	thisObj.init = function() {
+	thisObj["init"] = function() {
 		//Вызываем метод родительского класса
 		if(superInit.apply(thisObj, arguments) === false)return false;
 		
@@ -53,7 +71,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.initTabsSpetialProperties(thisObj.DOMElement);
 		
 		//Получим ссылку на контейнер табов
-		thisObj._subTabs = Array.from(thisObj.DOMElement.properties["tab"]);
+		thisObj._subTabs = Array["from"](thisObj.DOMElement["properties"]["tab"]);
 		thisObj._tabsCount = thisObj._subTabs.length;
 			
 		thisObj._subTabs.forEach(function(tabEl, _currentIndex){
@@ -109,8 +127,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 		thisObj.DOMElement.currentTab = thisObj._currentTab;
 	}
 }
-Object.inherit(WATabs, ui.WAElement);
-/* STATIC */
+Object["inherit"](WATabs, ui["WAElement"]);
 
 /* PROTOTYPE */
 /**
@@ -173,5 +190,13 @@ WATabs.prototype.initTabsSpetialProperties = function(_element) {
 		_element["addBehavior"]("class.ui.WATabs.ielt8.htc");
 	}
 }
+
+/* STATIC */
+WATabs["addEvent"] = ui["WAElement"]["addEvent"];
+WATabs["removeEvent"] = ui["WAElement"]["removeEvent"];
+
+/* LOGIC */
+if(DEBUG)WATabs["addEvent"](ui.EventTypes.ON_SHOW, console.log.bind(null, "waTabs ONSHOW"));
+if(DEBUG)WATabs["addEvent"](ui.EventTypes.ON_HIDE, console.log.bind(null, "waTabs ONHIDE"));
 
 })(window);

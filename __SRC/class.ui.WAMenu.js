@@ -1,10 +1,12 @@
 ﻿/*
  * @requared ui.WAElement
+ * @requared window.bubbleEventListener
  */
 
 ;(function(global) {//closure
 
-var ui = global.ui;
+// IMPORT
+var ui = global["ui"] = global["ui"] || {};
 
 /**
  * Класс описывающий поведение контейнера табов
@@ -16,9 +18,10 @@ var ui = global.ui;
 var WAMenu = ui["WAMenu"] = function (_params) {
 	var thisObj = this;
 	//Наследуем свойства родительского класса
-	WAMenu.superclass.constructor.apply(thisObj, arguments);
+	WAMenu["superclass"].constructor.apply(thisObj, arguments);
 	
 /* PRIVATE */
+	var _currentMenuItem;
 
 /* PRIVATE | FUNCTIONS*/
 	/**
@@ -26,6 +29,9 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 	 * @this {HTMLElement} Элемент на который мы повесим этот обработчик
 	 */
 	var _menuItemsOnClick = bubbleEventListener(WAMenu.menuEventDetailAttribute, function(event, elem, elemAttrValue) {
+		if(_currentMenuItem)_currentMenuItem.classList.remove("select");
+		(_currentMenuItem = elem).classList.add("select");
+	
 		var ev = new CustomEvent(thisObj.menuEvent, {bubbles : true, cancelable : true, detail : elemAttrValue})
 		
 		//Создаём событие, которое "всплывёт" до нужного обработчика или до document
@@ -48,11 +54,11 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 	/** Ссылка на метод init родительского класса
 	 * @private
 	 * @type {Function}	 */
-	var superInit = thisObj.init;//Сохраняем ссылку
+	var superInit = thisObj["init"];//Сохраняем ссылку
 	/**
 	 * Инициализация
 	 */
-	thisObj.init = function() {
+	thisObj["init"] = function() {
 		//Вызываем метод родительского класса
 		if(superInit.apply(thisObj, arguments) === false)return false;
 		
@@ -71,9 +77,17 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 		
 		//Alias
 		//thisObj.menuItems = thisObj.DOMElement.properties["menuItem"];
+		
+		//Temporary
+		//TODO:: triger spread. From `WATabs` down to `WAMenu`
+		Array["from"](thisObj.DOMElement.properties["menuItem"]).forEach(function(mi) {
+			if(_currentMenuItem)return;
+			
+			if(mi.classList.contains("select"))_currentMenuItem = mi;
+		})
 	}
 }
-Object.inherit(WAMenu, ui.WAElement);
+Object["inherit"](WAMenu, ui["WAElement"]);
 
 /* STATIC */
 /** @const */

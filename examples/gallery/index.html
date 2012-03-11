@@ -9,14 +9,13 @@
 	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
 	
-	<script src="https://raw.github.com/termi/ES5-DOM-SHIM/master/__SRC/a.js"></script>
-	<script src="http://static.onlf.ru/js/microdata-js.js"></script>
+	<script src="http://static.onlf.ru/js/2/a.js"></script>
+	<script src="http://static.onlf.ru/js/2/microdata-js.js"></script>
 	<!--[if lt IE 8]>
 	<script src="http://static.onlf.ru/js/a.ielt8.js"></script>
 	<script src="http://static.onlf.ru/js/microdata-js.ielt8.js"></script>
 	<![endif]-->
 	
-	<link rel="stylesheet" href="http://static.onlf.ru/css/a.css" />
 	<link rel="stylesheet" href="http://static.onlf.ru/css/mainComponents.css" />
 	<style>
 	.gallery > * {
@@ -43,9 +42,9 @@
 	</style>
 </head>
 
-<body itemscope="" itemtype="onlifeschema.org/WebApplication">
+<body itemscope="" itemtype="onlifeschema.org/WebApplication" itemid="urn:app:test1">
 
-<section class="gallery" itemscope="" itemprop="gallery component" itemtype="schema.org/ImageGallery" itemid="urn:onlife:apps:galleryWrapper">
+<section class="gallery" itemscope="" itemprop="gallery component" itemtype="onlifeschema.org/WebApplication onlifeschema.org/SlideShow" itemid="urn:app:apps/galleryWrapper">
   <header>
     <h3 class="title" itemprop="name">Моя галерея</h3>
     <p class="description" itemprop="description"></p>
@@ -59,29 +58,43 @@
     <div class="thumbnail select" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
       <p class="caption" itemprop="name caption">Картинка 1</p>
       <span class="description" itemprop="description">Описание 1</span>
-      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/127.jpg?1">
-      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/127-100x100.jpeg">
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/1.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/1-100x100.jpeg">
     </div>
     <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
       <p class="caption" itemprop="name caption">Название картинки 2 --- лфыоврал фылва</p>
       <span class="description" itemprop="description">Описание фыв32а4ф6 5ы4в6а4</span>
-      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/128.jpg?1">
-      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/128-100x100.jpeg">
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/2.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/2-100x100.jpeg">
     </div>
     <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
       <p class="caption" itemprop="name caption">Тестовая картинка 3</p>
       <span class="description" itemprop="description">Описание 3</span>
-      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/129.jpg?1">
-      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/129-100x100.jpeg">
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/3.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/3-100x100.jpeg">
     </div>
     <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
       <p class="caption" itemprop="name caption">3123 123 4  йцу</p>
       <span class="description" itemprop="description">Описание 45</span>
-      <meta itemprop="contentURL" content="http://constructor.onlifegroup.com/u/0/g/1/130.jpg?1">
-      <img itemprop="thumbnail" src="http://constructor.onlifegroup.com/u/0/g/1/130-100x100.jpeg">
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/4.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/4-100x100.jpeg">
+    </div>
+    <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">Мужик</p>
+      <span class="description" itemprop="description">Какой-то мужик</span>
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/5.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/5-100x100.jpeg">
+    </div>
+    <div class="thumbnail" itemprop="associatedMedia" itemscope="" itemtype="schema.org/ImageObject">
+      <p class="caption" itemprop="name caption">Девушка</p>
+      <span class="description" itemprop="description">-в платье-</span>
+      <meta itemprop="contentURL" content="http://static.onlf.ru/i/examples/gallery1/6.jpg">
+      <img itemprop="thumbnail" src="http://static.onlf.ru/i/examples/gallery1/thumbnails/6-100x100.jpeg">
     </div>
   </footer>
 </section>
+
+<div itemscope="" itemprop="component" itemtype="onlifeschema.org/WebApplication" itemid="urn:app:test1"></div>
 
 <!--script src="../../__SRC/enum.ui.EventTypes.js"></script>
 <script src="../../__SRC/class.MicroformatError.js"></script>
@@ -89,11 +102,12 @@
 <script src="../../__SRC/class.ui.WebApplication.js"></script>
 <script src="../../__SRC/class.ui.WATabs.js"></script>
 <script src="../../__SRC/class.ui.ImageGallery.js"></script>
+<script src="../../__SRC/class.ui.SlideShow.js"></script>
 <script src="../../__SRC/class.ui.WAMenu.js"></script>
 <script src="../../__SRC/class.ui.WAForm.js"></script>
 <script src="../../__SRC/enum.MicroformatConstructors.js"></script>
 <script src="../../__SRC/object.ResourceManager.js"></script-->
-<script src="../../__COMPILE/microdata-ui.js"></script>
+<script src="../../__COMPILE/microdata-ui.DEV.js"></script>
 
 <script>
 ;(function(global) {//closure
@@ -111,10 +125,10 @@ function main() {
 	var type = "onlifeschema.org/WebApplication",
 		webAppElement = document.getItems(type)[0];
 	
-	var constructor = MicroformatConstructors[type];
+	var _constructor = MicroformatConstructors[type];
 		
-	if(constructor) {
-		Site.webApp = new constructor(webAppElement, null);
+	if(_constructor) {
+		Site.webApp = new _constructor(webAppElement, null);
 		Site.webApp.init();
 	}
 	else console.error("There is no constructor named '" + type + "'")
@@ -126,7 +140,7 @@ else window.addEventListener("DOMContentLoaded", main);
 //Зарегистрируем тестовое приложение
 global["ResourceManager"].applications["apps/galleryWrapper"] = {
 	id : "galleryWrapper",
-	constructor : function() {
+	app : function() {
 		var thisObj = this;
 		thisObj.init = function(root) {
 			var _name = root.properties["name"][0].itemValue;
