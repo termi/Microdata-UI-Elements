@@ -1,0 +1,320 @@
+﻿<!DOCTYPE html>
+<!--[if lt IE 7]><html lang="ru" class="ie6 ielt7 ielt8 ielt9"><![endif]-->
+<!--[if IE 7]><html lang="ru" class="ie7 ielt8 ielt9"><![endif]-->
+<!--[if IE 8]><html lang="ru" class="ie8 ielt9"><![endif]-->
+<!--[if IE 9]><html lang="ru" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="ru"><!--<![endif]-->
+<head>
+	<title>Интернет-система onlife - ваш помощник в интернете</title>
+	<meta charset="utf-8" />
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+
+	<!-- Оптимизируем для экранов мобильников: j.mp/bplateviewport -->
+	<!--meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="viewport" content="width=1063, initial-scale=1.0" />
+	
+	<!-- Place favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+	<link rel="shortcut icon" href="/favicon.ico" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+	
+<!--[if lt IE 9]>
+<script src="http://static.onlf.ru/js/2/a.ie8.js"></script>
+<![endif]-->
+<script src="http://static.onlf.ru/js/2/a.js"></script>
+<!--[if lt IE 8]>
+<script src="http://static.onlf.ru/js/2/a.ielt8.js"></script>
+<![endif]-->
+	
+	<!-- НЕ НУЖНО, ЕСЛИ IE9.JS All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+	<!-- НЕ НУЖНО, ЕСЛИ IE9.JS script src="/js/mdz.js"></script -->
+	<!-- Библиотека IE9.js 'включит' в IE поддержку HTML5, а также некоторых специфических CSS3 фишек -->
+	<!-- !!! ВНИМАНИЕ !!! Библиотека IE9.js "ГЛЮЧИТ", если основной CSS файл содержит комментарии !!! -->
+	<!--     Поэтому для IE подключаем обфусцированную версию CSS файла -->
+	
+	<!--[if lt IE 9]>
+	<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE9.js"></script>
+	<![endif]-->
+	
+	<link rel="stylesheet" href="http://static.onlf.ru/css/a.css" />
+	
+	<link id="skin" rel="stylesheet" href="http://accounts.onlifeon.ru/css/main.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/siteChat.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/test.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/newForms.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/lk.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/LC_cal_global_container.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/mainComponents.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/font_OpenSans.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/cabinet/index.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/newlk/standardBlock3.class.css" />
+	<link rel="stylesheet" href="http://accounts.onlifeon.ru/css/newlk/standardBlock1.class.css" />
+	<link rel="stylesheet" href="css/newlk/page_market_96gkj2.id.css" />
+	
+</head>
+<body>
+
+
+<style>
+#notificationArea > * {
+	display: inline-block;
+	list-style-type: none;
+}
+#notificationArea .notificationCollection {
+	position: relative;
+	min-height: 48px;
+	min-width: 48px;
+	background: white;
+}
+#notificationArea .notificationCollection > header .name {
+	display: none;
+}
+#notificationArea .notificationCollection.select > header .name {
+	display: block;
+}
+#notificationArea .notificationCollection > .data {
+	display: none;
+	position: absolute;
+	width: 250px;
+	background: white;
+}
+#notificationArea .notificationCollection.select > .data, #notificationArea .notificationCollection:hover > .data {
+	display: block;
+}
+#notificationArea .notification {
+	
+}
+</style>
+
+	<div id="container" class="tabsContainer fixedMax fixedMin" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
+		<header id="LC_CP_Global_container">
+			<img style="display:none" class="mainLogo" itemprop="img" src="../i/header_logo.png" />
+			<div id="topPanel" class="topPanel" style="display:none">
+				<form id="globalSearch">
+					<label>
+						<input type="search" name="search" />
+					</label>
+				</form>
+				<ul itemtype="temp_notificationArea" itemscope="" id="notificationArea">
+					<li class="messages notificationCollection" itemprop="notification" itemscope="" itemtype="onlifeschema.org/NotificationCollection" itemid="urn:onlife:template:notifications:collection">
+						<header>
+							<span itemprop="itemsCount" class="short">3</span>
+							<p class="name" itemprop="name">непрочитанных сообщения</p>
+						</header>
+						<ul class="data">
+							<li class="message notification" itemprop="notification" itemscope="" itemtype="onlifeschema.org/Notification" itemid="urn:onlife:template:notifications:item">
+								<header>
+									<span itemprop="itemsCount" class="short">1</span>
+									<span class="name" itemprop="name">Сообщение от Пользователя</span>
+									<span class="person" itemprop="author" itemscope="" itemtype="schema.org/Person">
+										<img class="avatar" alt="" itemprop="image" />
+										<span class="firstName" itemprop="givenName">Игорь</span><span class="middleName" itemprop="additionalName">Евгеньевич</span><span class="lastName" itemprop="familyName">Борщенков</span>
+									</span>
+								</header>
+								<div class="data">
+									<time itemprop="dateCreated">[Дата в формате: 19.11.2011 19:00]</time>
+									<p class="message" itemprop="description">[Сообщение от пользователя]</p>
+								</div>
+								<footer></footer>
+							</li>
+						</ul>
+						<footer></footer>
+					</li>
+				</ul>
+				<div id="userInfo_menu">
+					<header>
+						<span class="person" itemprop="about" itemscope="" itemtype="schema.org/Person" itemid="urn:onlife:template:menu:menuProfile">
+						</span>
+					</header>
+					<div class="data">
+					
+					</div>
+					<footer class="actions" itemprop="component" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="userlogout">
+						<a class="logout" href="#logout" itemprop="menuItem" itemscope="" itemtype="schema.org/Thing">Выйти</a>
+					</footer>
+				</div>
+			</div>
+			<nav id="mainMenu" class="menuRow tabsMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+				<ul>
+					<li class="menuItem" data-menu-detail="0" itemprop="menuItem" itemscope="" itemtype="schema.org/Thing">
+						<a itemprop="url" href="#"><span itemprop="name">Услуги</span></a>
+					</li>
+					<li class="menuItem" data-menu-detail="1" itemprop="menuItem" itemscope="" itemtype="schema.org/Thing">
+						<a itemprop="url" href="#"><span itemprop="name">Общение</span></a>
+					</li>
+					<li class="menuItem" data-menu-detail="2" itemprop="menuItem" itemscope="" itemtype="schema.org/Thing">
+						<a itemprop="url" href="#"><span itemprop="name">Настройки</span></a>
+					</li>
+				</ul>
+			</nav>
+		</header>
+		<div id="main" class="data tabs" itemprop="mainContentOfPage">
+			<header></header>
+			<div class="data">
+				<div id="page_market_96gkj2" data-tmpl="structure:market_28383" class="tab select clmn011 ui-ColPadding tabsContainer clearfix" itemscope="" itemtype="onlifeschema.org/WebApplication" itemid="urn:onlife:apps:onlife:market">
+					<div class="left"></div>
+					<div class="center standardBlock3 fixedBlock" itemprop="component списокУслуг" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="menuopentab">
+						<header>
+							<h3 class="title" itemprop="name">Торговые площадки</h3>
+							<div class="topMenu">
+								<!--a href="#" class="select button">Доступные площадки</a-->
+							</div>
+						</header>
+						
+						<div class="data v_itemsList custom-scroll tabsMenu">
+							<a href="#" class="" data-menu-detail="0" itemprop="menuItem услуга" itemscope="" itemtype="schema.org/Thing">	
+								<img class="img" src="/application/onlife/market/akkor/akkor_mini.png" alt="" itemprop="img" />
+								<p class="name" itemprop="name">Торговая площадка «Аккор»</p>
+								<p class="description" itemprop="description">Сельское хозяйство</p>
+							</a>
+						</div>
+						
+						<footer></footer>
+					</div>
+					
+					<div class="right component_detail_lvl1" itemprop="component" itemscope="" itemtype="onlifeschema.org/WATabs">
+						<header></header>					
+						
+						<div class="data tabs">
+							<div id="akkor_market_4kjk29" class="select standardBlock3 fixedBlock" itemprop="tab component" itemscope="" itemtype="onlifeschema.org/WATabs" itemid="urn:onlife:apps:onlife:market:akkor">
+								<header>
+									<div class="card">
+										<img data-src="[Аватара услуги]" alt="" itemprop="img" />
+										<p class="name" itemprop="name">[Название услуги]</p>
+									</div>
+									<p style="display: none" class="description" itemprop="description">[Описание услуги]</p>
+									<div class="tabsMenu topMenu" itemprop="component tabsMenu" itemscope="" itemtype="onlifeschema.org/WAMenu" data-menu-event="32">
+										<button class="select button" data-menu-detail="0" itemprop="menuItem">Доступные товары</button>
+										<button class="button" data-menu-detail="1" itemprop="menuItem">Мои товары</button>
+										<button class="button" data-menu-detail="2" itemprop="menuItem">Заказы</button>
+									</div>							
+								</header>
+								<div class="data tabs">
+									<div class="tab select" itemprop="tab">
+										<header>
+											<div class="search">
+												<header>Поиск</header>
+												<div class="data">
+												<span>Регион</span>
+												<select>
+													<option>Алтайский край</option>
+												</select>
+												<span>Категория</span>
+												<select>
+													<option>Пшеница алтайская 81</option>
+												</select>
+												</div>
+												<footer></footer>
+											</div>
+											<div class="order">
+												<header>Ваш заказ</header>
+												<div class="data">
+												<span>Тоннаж</span>
+												<input type="text" />
+												<input type="button" value="order"/>
+												</div>
+												<footer></footer>
+											</div>
+										</header>
+										<div class="data">
+											<div class="searchItem" itemprop="product" itemscope="" itemtype="schema.org/Product">
+												<div class="description">
+													<div class="rating" itemprop="aggregateRating" itemscope="" itemtype="schema.org/AggregateRating">
+														<span itemprop="ratingValue"></span>
+													</div>
+													<h4 class="title" style="color:#000;font-size:18px">Православное хозяйство «Cофия»</h4>
+													<div class="details">
+														<span style="color:#999">В наличии:  </span>
+														<span style="color:#3e723a">45 тонн </span>
+														<span style="color:#999">Цена за тонну:  </span>
+														<span style="color:#3e723a">7342 руб.</span>
+													</div>
+												</div>
+												<div class="buyMenu">
+												</div>
+											</div>
+										</div>
+										<footer></footer>
+									</div>
+								</div>
+								<footer>
+									<div class="buttomMenu" data-view-action="change-view">
+										<!--button class="select list" data-view-option="list"></button>
+										<button class="cards" data-view-option="cards"></button>
+										<button class="table" data-view-option="table"></button-->
+									</div>
+								</footer>
+							</div>
+							
+						</div>
+						
+						
+						<footer></footer>
+					</div>
+				</div>
+			</div>
+			<footer></footer>
+		</div>
+		
+		<footer></footer>
+	</div>
+
+<script type="text/javascript" src="http://static.onlf.ru/js/libs/yepnope.1.5.2-min_mod.js"></script>
+
+<!--script src="../../__SRC/enum.ui.EventTypes.js"></script>
+<script src="../../__SRC/class.MicroformatError.js"></script>
+<script src="../../__SRC/class.ui.WAElement.js"></script>
+<script src="../../__SRC/class.ui.WebApplication.js"></script>
+<script src="../../__SRC/class.ui.WATabs.js"></script>
+<script src="../../__SRC/class.ui.WAMenu.js"></script>
+<script src="../../__SRC/class.ui.WAForm.js"></script>
+<script src="../../__SRC/enum.MicroformatConstructors.js"></script-->
+
+
+<script>
+;(function(global) {//closure
+
+yepnope([
+{
+	test : (browser.msie < 8),
+	yep  : ["http://static.onlf.ru/js/2/microdata-js.js", "http://static.onlf.ru/js/2/microdata-js.ielt8.js"],
+	nope : ["http://static.onlf.ru/js/2/microdata-js.js"],
+	both : ["http://static.onlf.ru/js/2/microdata-ui.js"],
+	complete : init
+}
+	]);
+
+function init() {
+	//Включаем автообновление микроданных
+	//global.microdata_liveProperties = true
+
+	if(!global.Site)global.Site = {};
+	var Site = global.Site,
+		MicroformatConstructors = global["MicroformatConstructors"];
+
+	function main() {
+		//Получаем ссылку на ВЕБ-приложение
+		var webAppElement = document.getItems("onlifeschema.org/WebApplication")[0],
+			type = webAppElement.getAttribute("itemtype");
+		
+		
+		var constructor = MicroformatConstructors[type];
+			
+		if(constructor) {
+			Site.webApp = new constructor(webAppElement, null);
+			Site.webApp.init();
+		}
+		else console.error("There is no constructor named '" + type + "'")
+	}
+	if(document.readyState == "complete")main();
+	else window.addEventListener("DOMContentLoaded", main);
+}
+})(window);
+</script>
+	
+</body>
+
+</html>

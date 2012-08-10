@@ -1,0 +1,35 @@
+﻿/** @component {.loginRegisterFormWrapper} Главный контэйнер 
+  * @requared {.loginRegisterFormWrapper.standartBlock1} */
+
+#loginRegisterForm .loginRegisterFormWrapper {
+	position: absolute;
+	width: 100%;
+	
+	height: 640px;
+	top: 50%;
+	margin-top: -320px;
+	
+	font-family: "Verdana";
+	
+	background: url(../i/body_bg.jpg) 50% 50% no-repeat;
+}
+
+#loginRegisterForm .loginRegisterFormWrapper > .data {
+	
+}
+
+/** @component {.loginRegisterFormWrapper > header} Заголовок */
+#loginRegisterForm .loginRegisterFormWrapper > header {
+	text-align: center;
+	margin-bottom: 100px;
+	
+	font-family: "Open Sans";
+	font-size: 18px;
+	font-weight: 300;
+}
+
+
+/** @component {.loginRegisterFormWrapper > footer} Подвал */
+#loginRegisterForm .loginRegisterFormWrapper > footer {
+
+}

@@ -1,0 +1,42 @@
+/*
+В этом файле настройки для html и body, а также другие глобальные стили
+*/
+
+/* Импорт */
+@import "http://fonts.onlf.ru/OpenSans.css";
+@import "http://fonts.onlf.ru/OpenSans-Light.css";
+
+@import "mainComponents.css";
+@import "forms.css";
+@import "standardBlock3.class.css";
+@import "standardBlock1.class.css";
+@import "standardBlock4.class.css";
+@import "container.id.css";
+@import "mainMenu.id.css";
+@import "ui-colPadding.class.css";
+@import "topPanel.id.css";
+@import "page_market_96gkj2.id.css";
+
+html, body {
+	width: 100%;
+	height: 100%;
+	background: #e2e2e2;
+	overflow: auto;
+}
+body{
+	overflow: hidden;
+	min-width: 800px;
+	min-height: 600px;
+	position: relative;
+}
+/*
+.standardBlock1 > .data.clmn110 > .left, .clmn110 > .center {
+	height: 100%;
+}*/
+
+.clmn110 > .left {
+	height: 100%;
+}
+.clmn110 > .center {
+	height: 100%;
+}

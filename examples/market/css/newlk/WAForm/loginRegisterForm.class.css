@@ -1,0 +1,126 @@
+﻿/** @component {#loginRegisterForm .loginRegisterForm} Форма входа/регистрации */
+
+#loginRegisterForm {
+	display: none;
+}
+#loginRegisterForm.select {
+	display: block;
+}
+
+#loginRegisterForm .loginRegisterForm {
+	margin: auto;
+	width: 608px;/*608 - @this->padding-[left|right] */
+	height: 334px;/*334 - @this->padding-[top|buttom] */
+	position: relative;
+	box-shadow: 0px 0px 20px gray;
+	-moz-box-shadow: 0px 0px 20px gray;
+	-webkit-box-shadow: 0px 0px 20px gray;
+}
+
+#loginRegisterForm .loginRegisterForm > .left {
+	width: 206px;
+	margin-right: 4px;
+	height: 100%;
+	
+	background: white;
+}
+#loginRegisterForm .loginRegisterForm > .left > .data.list {
+	padding: 16px 0;
+	list-style-type: none;
+	margin: 0;
+}
+#loginRegisterForm .loginRegisterForm > .left > .data.list > * a, #loginRegisterForm .loginRegisterForm > .left > .data.list > * a:active, #loginRegisterForm .loginRegisterForm > .left > .data.list > * a:link {
+	display: block;
+	padding: 10px;
+	text-decoration: none;
+	color: #666666;
+}
+
+#loginRegisterForm .loginRegisterForm > .left > .data.list > * a:hover, #loginRegisterForm .loginRegisterForm > .left > .data.list > *.select a {
+	color: #d19520;
+}
+#loginRegisterForm .loginRegisterForm > .center {
+	background: white;
+	height: 334px;/*@(#loginRegisterForm .loginRegisterForm)->height*/
+	width: 398px;/*@(#loginRegisterForm .loginRegisterForm)->width - @(#loginRegisterForm .loginRegisterForm > .left)->[width + margin-right] - @this->padding-[left|right]*/
+}
+#loginRegisterForm .loginRegisterForm > .center > .data {
+	padding: 24px 12px;
+	height: 288px;/*@(#loginRegisterForm .loginRegisterForm)->height - @this->padding-[left|right]*/
+	}
+	
+#loginRegisterForm .loginRegisterForm > .center .tab {
+	position: relative;
+	height: 100%;
+}
+#loginRegisterForm .loginRegisterForm > .center .tab > footer {
+	position: absolute;
+	left: 10px;
+	right: 10px;
+	bottom: 0;
+}
+
+#loginRegisterForm .loginRegisterForm:before, #loginRegisterForm .loginRegisterForm:after {
+	width: 12px;
+	height: 100%;
+	
+	display: block;
+	visibility: visible;/*Перебиваем clearfix*/
+	float: left;
+	height: 100%;
+	left: -12px;
+	top: 0;
+	position: absolute;
+	
+	content: "";
+	background: url(../i/blue_col.png);
+}
+#loginRegisterForm .loginRegisterForm:after {
+	float: right;
+	left: auto;
+	right: -12px;
+	background: url(../i/orange_col.png);
+}
+
+#loginRegisterForm .loginRegisterForm fieldset {
+	min-height: 114px;
+}
+
+#loginRegisterForm .loginRegisterForm fieldset label {
+	display: block;
+}
+#loginRegisterForm .loginRegisterForm fieldset label > input{
+	display: inline-block;
+	width: 50%;
+	float: right;
+	text-align: left;
+	border: 1px solid #d3d3d3;
+	
+	-webkit-appearance: textfield;
+}
+#loginRegisterForm .loginRegisterForm fieldset label + label {
+	margin-top: 12px;
+}
+
+#loginRegisterForm .loginRegisterForm fieldset label > span {
+	
+	font-family: "Open Sans";
+	font-size: 18px;
+	font-weight: 300;
+}
+
+#loginRegisterForm .loginRegisterForm fieldset .hint {
+	font-size: 12px;
+}
+#loginRegisterForm .loginRegisterForm fieldset label + .hint {
+	margin-top: 8px;
+}
+
+#loginRegisterForm .loginRegisterForm .submit {
+	width: 100%;
+	background: #d3d3d3;
+	border: none;
+	padding: 6px 0;
+	margin: 0;
+	font-size: 12px;
+}

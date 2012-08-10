@@ -76,7 +76,7 @@ function() {
 		//Уникальный идентификатор ресурса должен начинатся на "urn:"
 		var urns = url.split(":"),
 			isURN = urns[0] === _urnPrefix,
-			realUrl = url.substr(urns[0].length + urns[1].length + 2);
+			realUrl = urns.length == 1 ? urns[0] : url.substr(urns[0].length + (urns[1] && urns[1].length || 0) + urns.length - 1);
 		
 		if(_next_callbacl) {
 			_next_callbacl(url, onDone, onError, realUrl);
@@ -84,14 +84,14 @@ function() {
 		}
 		
 		if(isURN)switch(urns[1]) {
+			case "app":
+				thisObj.loadApplication(url, onDone, onError, realUrl);
+			break;
 			case "templates":
+			default:
 				//thisObj.loadTemplate(url, onDone, onError, urns[urns.length - 1]);
 				//TODO::
 				onDone("", realUrl)
-			break;
-			
-			case "app":
-				thisObj.loadApplication(url, onDone, onError, realUrl);
 			break;
 		}
 		else {
@@ -109,7 +109,11 @@ function() {
 	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
 	thisObj.loadTemplate = function(url, onDone, onError, _sys_realUrl) {
-		if(!_sys_realUrl) {
+		if(_sys_realUrl == void 0) {
+			if(_sys_realUrl === "") {
+				console.warning("Null resource -> Nothing to load!");
+				return;
+			}
 			thisObj.loadResource(url, onDone, onError, thisObj.loadTemplate);
 			return;
 		}
@@ -150,7 +154,11 @@ function() {
 	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
 	thisObj.loadApplication = function(url, onDone, onError, _sys_realUrl) {
-		if(!_sys_realUrl) {
+		if(_sys_realUrl == void 0) {
+			if(_sys_realUrl === "") {
+				console.warning("Null resource -> Nothing to load!");
+				return;
+			}
 			thisObj.loadResource(url, onDone, onError, thisObj.loadApplication);
 			return;
 		}
@@ -191,7 +199,11 @@ function() {
 	 * @param {string=} _sys_realUrl Не указывается напрямую. Вычесленный url-ресурса
 	 */
 	thisObj.loadTextResource = function(url, onDone, onError, _sys_realUrl) {
-		if(!_sys_realUrl) {
+		if(_sys_realUrl == void 0) {
+			if(_sys_realUrl === "") {
+				console.warning("Null resource -> Nothing to load!");
+				return;
+			}
 			thisObj.loadResource(url, onDone, onError, thisObj.loadTextResource);
 			return;
 		}

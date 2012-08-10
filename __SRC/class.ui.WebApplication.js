@@ -82,99 +82,104 @@ var WebApplication = ui["WebApplication"] = function (_element, _owner) {
 	 */
 	thisObj["init"] = function() {
 		//Вызываем метод родительского класса
-		if(superInit.apply(thisObj, arguments) === false)return false;
-		
-		//Пробуем получить уникальный идентификатор ресурса
-		var urn = _element.getAttribute("itemid"),
-			urns = (urn || "").split(":"),
-			isURN = urns[0] === _urnPrefix;
-		if(isURN && !thisObj.templateLoaded) {//Проверим на наличие и, что это уникальный идентификатор ресурса
-			
-			global["ResourceManager"].loadResource(urn, function(jsonOrText, realUrl) {
-			
-				thisObj.loadJSApplication(jsonOrText, realUrl, step1);
-			
-				function step2(container, _element) {
-					//Инициализируем, если надо приложение
-					if(typeof jsonOrText == "object") {
-						var _constructor = jsonOrText["app"],
-							application = new _constructor(container);
-						application["init"](_element);
-					}
-				}
-				
-				function createNodeFromText(text, container) {
-					var df = document.createDocumentFragment(),
-						el = df.appendChild(document.createElement("div"));
-					el.innerHTML = text;
-					el = el.firstChild;
+		var status = superInit.apply(thisObj, arguments);
+		if(status === false) {
+			if(!thisObj.templateLoaded) {
+				//Пробуем получить уникальный идентификатор ресурса
+				var urn = _element.getAttribute("itemid"),
+					urns = (urn || "").split(":"),
+					isURN = urns[0] === _urnPrefix,
+					realUrl = urns.length == 1 ? urns[0] : url.substr(urns[0].length + (urns[1] && urns[1].length || 0) + urns.length - 1);
 					
-					_forEach(el.attributes, function(attr) {
-						if(attr.name == "class") {
-							_forEach(el.classList, function(className) {
-								container.classList.add(className);
-							})
-						}
-						container.setAttribute(attr.name, attr.value);
-					})
+				if(isURN && !thisObj.templateLoaded) {//Проверим на наличие и, что это уникальный идентификатор ресурса
 					
-					var ch;
-					while(ch = el.childNodes[0]) {
-						/*if(ch.nodeType == 3)el.removeChild(ch);
-						else ЗАЧЕМ ????*/
-							container.appendChild(ch);
-					}
+					global["ResourceManager"].loadResource(urn, function(jsonOrText, realUrl) {
 					
-					//Вычищаем
-					el.innerHTML = "";
-					df = el = null;
-				}
-				
-				function step1() {
-					//Проверим не пустой ли у нас элемент
-					if(_isEmptyElement(_element)) {
-						if(typeof jsonOrText == "object") {
-							if(jsonOrText["html"])
-								global["ResourceManager"].loadTextResource(urn + "/" + jsonOrText["html"], function(text) {
-									if(text == "") {
-										console.error("Empty answer for '" + urn + "' request");
-									}
-									else {
-										createNodeFromText(text, _element);
-										step2(jsonOrText, _element);
-										
-										//Заново запускаем инициализацию
-										thisObj["init"]();
-									}
-								}, function() {
-									console.error("Some error fired while sending '" + urn + "' request");
-								})
-							else {
-								console.error("Need `html` teamplete in 'html' property")
+						thisObj.loadJSApplication(jsonOrText, realUrl, step1);
+					
+						function step2(container, _element) {
+							//Инициализируем, если надо приложение
+							if(typeof jsonOrText == "object") {
+								var _constructor = jsonOrText["app"],
+									application = new _constructor(container);
+								application["init"](_element);
 							}
 						}
-						else {
-							createNodeFromText(jsonOrText, _element);
-							step2(jsonOrText, _element);
+						
+						function createNodeFromText(text, container) {
+							var df = document.createDocumentFragment(),
+								el = df.appendChild(document.createElement("div"));
+							el.innerHTML = text;
+							el = el.firstChild;
 							
-							//Заново запускаем инициализацию
-							thisObj["init"]();
+							_forEach(el.attributes, function(attr) {
+								if(attr.name == "class") {
+									_forEach(el.classList, function(className) {
+										container.classList.add(className);
+									})
+								}
+								container.setAttribute(attr.name, attr.value);
+							})
+							
+							var ch;
+							while(ch = el.childNodes[0]) {
+								/*if(ch.nodeType == 3)el.removeChild(ch);
+								else ЗАЧЕМ ????*/
+									container.appendChild(ch);
+							}
+							
+							//Вычищаем
+							el.innerHTML = "";
+							df = el = null;
 						}
 						
-					}
-					else {
-						step2(jsonOrText, _element);
-						//Заново запускаем инициализацию
-						//TODO:: Нужно ли??? ?? thisObj["init"]();
-					}
+						function step1() {
+							//Проверим не пустой ли у нас элемент
+							if(_isEmptyElement(_element)) {
+								if(typeof jsonOrText == "object") {
+									if(jsonOrText["html"])
+										global["ResourceManager"].loadTextResource(realUrl + "/" + jsonOrText["html"], function(text) {
+											if(text == "") {
+												console.error("Empty answer for '" + realUrl + "' request");
+											}
+											else {
+												createNodeFromText(text, _element);
+												step2(jsonOrText, _element);
+												
+												//Заново запускаем инициализацию
+												thisObj["init"]();
+											}
+										}, function() {
+											console.error("Some error fired while sending '" + realUrl + "' request");
+										})
+									else {
+										console.error("Need `html` teamplete in 'html' property")
+									}
+								}
+								else {
+									createNodeFromText(jsonOrText, _element);
+									step2(jsonOrText, _element);
+									
+									//Заново запускаем инициализацию
+									thisObj["init"]();
+								}
+								
+							}
+							else {
+								step2(jsonOrText, _element);
+								//Заново запускаем инициализацию
+								//TODO:: Нужно ли??? ?? thisObj["init"]();
+							}
+						}
+					});
+					
+					//Поднимаем флаг, что мы уже загружали шаблон или приложение
+					thisObj.templateLoaded = true;
 				}
-			});
-			
-			//Поднимаем флаг, что мы уже загружали шаблон или приложение
-			thisObj.templateLoaded = true;
+			}
 			return false;//Предотвращаем дальнейшую инициализацию
 		}
-		
+		else {
 		/*var tmp;
 
 		//temp START TODO:: переделать
@@ -229,7 +234,7 @@ var WebApplication = ui["WebApplication"] = function (_element, _owner) {
 		
 		//Событие выхода пользователя из приложения - разрываем сессию и перезагружаем страницу
 		//thisObj.DOMElement.addEventListener("userlogout", thisObj.updateAccountStatus.bind(thisObj))
-		
+		}
 	}
 }
 Object["inherit"](WebApplication, ui["WAElement"]);

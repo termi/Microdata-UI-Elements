@@ -1,0 +1,54 @@
+
+/** @component {.clmn110.leftFixed} Стандартный блок с header, .data и footer */
+.fixedBlock {
+	height: 100%;
+	overflow: hidden;
+	position: relative;
+}
+
+/** @component {.clmn110.leftFixed > header} Заголовок блока
+ * @param {height}
+ */
+.fixedBlock > header {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 96px;
+}
+/* Временно */
+.fixedBlock > header img, .fixedBlock > header .description {
+	display: none;
+}
+
+/** @component {.clmn110.leftFixed > .data} Данные блока
+ * @param {top}
+ * @required {top: @(.clmn110.leftFixed > header)->height}
+ * @param {bottom}
+ * @required {bottom: @(.clmn110.leftFixed > footer)->height}
+ * @param {z-index?}
+ * @param {left?}
+ * @param {right?}
+ */
+.fixedBlock > .data {
+	position: absolute;
+	top: 96px;
+	left: 0;
+	right: 0;
+	bottom: 32px;
+	overflow-x: hidden;
+	overflow-y: auto;
+}
+
+/** @component {.clmn110.leftFixed > header} Подвал блока
+ * @param {height}
+ * @param {z-index?}
+ */
+.fixedBlock > footer {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	z-index: 200;
+	height: 32px;
+}

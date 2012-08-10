@@ -1,0 +1,97 @@
+/** @component {.forms}
+ */
+.forms > .data > fieldset {
+	max-width: 400px;
+	}
+ 
+.forms > .data > fieldset label  > .name{
+	display: block;
+	
+	height: 32px;
+	line-height: 40px;
+	
+	font-family: "Verdana";
+	font-size: 14px;
+	color: #666;
+	}
+	
+.forms > .data > fieldset label input,
+.forms > .data > fieldset label .input {
+	height: 24px;	
+	display: block;
+	width: 100%;
+	
+	box-sizing: border-box;
+	 -webkit-box-sizing: border-box;
+	  -moz-box-sizing: border-box;
+	
+	margin: 4px 0;
+	border: 1px solid #ccc;	
+	outline: none;
+	
+	font-family: "verdana";
+	font-size: 12px;
+	}
+	
+.forms > .data > fieldset label textarea.input {
+	resize: vertical;
+	min-height: 48px;
+	}
+	
+.forms > .data > fieldset label input:focus,
+.forms > .data > fieldset label .input:focus {
+	background-color: #f6fafc;
+	border: 1px solid #3377a2;	
+	outline: none;
+	}
+	
+	
+.forms > .data > fieldset label > ul {
+	list-style: none;
+	margin-left: 0;
+	}
+	
+.forms > .data > fieldset label > button {
+	min-width: 200px;
+	height: 24px;
+	
+	margin: 4px 0;
+	
+	border: 0;
+	background-color: #a4a4a4;
+	
+	font-family: "verdana";
+	font-size: 12px;
+	
+	color: #fff;
+	}
+	
+.forms > .data > fieldset label > button:active,
+.forms > .data > fieldset label > button:focus {
+	background-color: #7d7d7d;
+	outline: none;
+	
+	}
+
+.forms > .data {
+	padding: 0 16px;
+	}
+	
+.forms > .bottomMenu > .submit {
+	height: 24px;
+	
+	margin: 4px 0;
+	
+	border: 0;
+	background-color: #a4a4a4;
+	
+	font-family: "verdana";
+	font-size: 12px;
+	
+	color: #fff;
+	}
+	
+.forms > .bottomMenu > .submit.right {
+	float: right;
+	}
+	

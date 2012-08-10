@@ -1,0 +1,8 @@
+
+/** @component {.standardBlock2} Стандартный блок с header, .data и footer */
+.standardBlock4 > header, .standardBlock4 > footer {
+	display: none;
+}
+.standardBlock4 > .data {
+	height: 100%;
+}

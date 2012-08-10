@@ -1,0 +1,228 @@
+/**
+ * @version 2
+ * @last-update 07.11.2011
+ *  changeLog:
+ *    3 [07.11.11] EpicFail with ".clmn111 > *, .clmn011 > *, .clmn110 > * { display: table-cell }" - [CSS] bug inner img ignore max-width value
+ *    2 [07.11.11] .clmn111 > *, .clmn011 > *, .clmn110 > * { display: table-cell }
+ */
+
+
+
+/* Состояния тега html */
+/** @mixedstate {.mozilla}  */
+/** @mixedstate {.webkit}  */
+/** @mixedstate {.safari}  */
+/** @mixedstate {.opera}  */
+/** @mixedstate {.iphone}  */
+/** @mixedstate {.ipod}  */
+/** @mixedstate {.ipad}  */
+/** @mixedstate {.msie}  */
+/** @mixedstate {.ie6}  */
+/** @mixedstate {.ie7}  */
+/** @mixedstate {.ie8}  */
+/** @mixedstate {.ielt9}  */
+/** @mixedstate {.ielt8}  */
+/** @mixedstate {.ielt7}  */
+
+
+
+
+
+/** @component {#container} Главный контейнер страницы */
+/** @state {#container.fixed} Зафиксированная ширина главного контейнера страницы
+ * @param {width?} */
+#container.fixed {
+	width: 1024px;
+	margin-left: auto;
+	margin-right: auto;
+}
+/** @state {#container.fixedMin} Зафиксированная минимальная ширина главного контейнера страницы
+ * @param {min-width?} */
+#container.fixedMin {
+	min-width: 800px;
+	margin-left: auto;
+	margin-right: auto;
+}
+/** @state {#container.fixedMax} Зафиксированная максимальная ширина главного контейнера страницы
+ * @param {max-width?} */
+#container.fixedMax {
+	max-width: 1280px;
+	margin-left: auto;
+	margin-right: auto;
+}
+/** @state {#container.fixedwrapped} 100% ширина главного контейнера страницы, но с зафиксированными элементами внутри контейнера
+ * @param {width?} */
+#container.fixedwrapped > * {
+	width: 1024px;
+	margin-left: auto;
+	margin-right: auto;
+}
+/** @component {img} изображение
+ * @temp */
+img {
+	max-width: 100%;
+}
+
+/* Управление колонками трёхколоночного блока */
+/* NOTE: Центральная колонка не выключается */
+/** @component {.clmn011} Контейнер с центральной и правой колонкой */
+/** @component {.clmn010} Контейнер с центральной колонкой */
+/** @component {.clmn110} Контейнер с центральной и левой колонкой */
+/** @component {.clmn111} Контейнер с центральной, левой и правой колонками */
+/** @component {.clmn011 > .left, .clmn010 > .left, .clmn110 > .left, .clmn111 > .left} Левая колонка
+ * @required {display: block} */
+/** @component {.clmn011 > .center, .clmn010 > .center, .clmn110 > .center, .clmn111 > .center} Центральная колонка
+ * @required {display: block} */
+/** @component {.clmn011 > .right, .clmn010 > .right, .clmn110 > .right, .clmn111 > .right} Правая колонка
+ * @required {display: block} */
+/*.clmn111, .clmn011, .clmn110 {
+	width: 100%;
+	box-sizing: border-box;
+}
+.clmn111 > *, .clmn011 > *, .clmn110 > * {
+	
+}*/
+.clmn011 > .left, .clmn010 > .left, .clmn010 > .right, .clmn110 > .right {
+	display: none
+}
+.clmn111 > .left, .clmn110 > .left, .clmn111 > .center, .clmn110 > .center, .clmn011 > .center {
+	float: left;
+}
+.clmn011 > .right, .clmn111 > .right {
+	float: right;
+}
+.clmn010 > .center {
+	width: 100%;
+}
+.clmn111 > .center {
+	width: 50%;
+}
+.clmn011 > .center, .clmn110 > .center {
+	width: 75%;
+}
+.clmn111 > .right, .clmn111 > .left, .clmn011 > .right, .clmn110 > .left {
+	width: 25%;
+}
+/** @state {.clmn111.equal} Все три колонки одинаковой ширины */
+.clmn111.equal > .right, .clmn111.equal > .left, .clmn111.equal > .center {
+	width: 33.33%;
+}
+/** @state {.clmn011.equal, .clmn110.equal} Две колонки одинаковой ширины */
+.clmn011.equal > .right, .clmn110.equal > .left, .clmn011.equal > .center, .clmn110.equal > .center {
+	width: 50%;
+}
+
+/** @state {.clmn011.narrow > .right, .clmn110.narrow > .left, .clmn110.narrow > .center, .clmn011.narrow > .center} Центральная колонка меньшей ширины чем обычно. Включенная правая/левая больше чем обычно */
+.clmn011.narrow > .right, .clmn110.narrow > .left {
+	width: 33%;
+}
+.clmn011.narrow > .center, .clmn110.narrow > .center {
+	width: 67%;
+}
+
+/**
+ * @ie_fix {.ielt8 .clmn111 > .right, .ielt8 .clmn011 > .right, .ielt8 .clmn111 > .center, .ielt8 .clmn110 > .center} fixed width:n% IE < 8 bug
+ * @ielt8
+ * @target {.clmn110 > .center, .clmn111 > .center, .clmn011 > .right, .clmn111 > .right}
+ */
+.ielt8 .clmn111 > .right, .ielt8 .clmn011 > .right, .ielt8 .clmn111 > .center, .ielt8 .clmn110 > .center {
+	margin-left: -.1%; /* Fix for IE7 */
+}
+/*clear fix*/
+.clmn111:before,.clmn111:after,.clmn010:before,.clmn010:after,.clmn011:before,.clmn011:after,.clmn110:before,.clmn110:after{content:"\0020";display:block;height:0;visibility:hidden}
+.clmn111:after,.clmn010:after,.clmn011:after,.clmn110:after{clear:both}
+.clmn111,.clmn010,.clmn011,.clmn110{zoom:1}
+
+/** @state {.clmn011.fixed, .clmn010.fixed, clmn110.fixed, .clmn111.fixed} Контейнер с левой и правой колонками фиксированой ширины. Центральная колонка с автоматической шириной */
+/* --- Левая колонка < */
+
+
+/* TODO:: !!!! Переделать под display: table-cell для мажорных браузеров, а для IE < 8 сделать автоматическое вычисление margin-* через expression */
+
+
+/**
+ * @state {.clmn110.fixed > .left, .clmn111.fixed > .left} Левая колонка с фиксированой шириной
+ * @required {float: left}
+ * @required {margin-right: -100%}
+ * @param {width} 
+ */
+.clmn110.fixed > .left, .clmn111.fixed > .left {
+	margin-right: -100%;
+	width: 250px;
+}
+/* > Левая колонка --- */
+/* --- Центральная колонка < */
+/**
+ * @state {.clmn110.fixed > .center} Центральная колонка с включенной левой
+ * @required {float: left}
+ * @required {margin-left: @sum(@(.clmn110.fixed > .left)->[width|padding-left|padding-right])}
+ * @required {width: auto}
+ */
+.clmn110.fixed > .center {
+	width: auto;
+	margin-left: 250px;
+}
+/**
+ * @state {.clmn111.fixed > .center} Центральная колонка с включенными левой и правой
+ * @required {float: left}
+ * @required {margin-left: @sum(@(.clmn111.fixed > .left)->[width|padding-left|padding-right])}
+ * @required {margin-right: @sum(@(.clmn111.fixed > .right)->[width|padding-left|padding-right])}
+ * @required {width: auto}
+ */
+.clmn111.fixed > .center {
+	width: auto;
+	margin: 0 250px;
+}
+/**
+ * @state {.clmn011.fixed > .center} Центральная колонка с включенной правой
+ * @required {float: left}
+ * @required {margin-right: @sum(@(.clmn011.fixed > .right)->[width|padding-left|padding-right])}
+ * @required {width: auto}
+ */
+.clmn011.fixed > .center {
+	width: auto;
+	margin-right: 250px;
+}
+/* > Левая колонка --- */
+/* --- Правая колонка < */
+/**
+ * @state {.clmn011.fixed > .right, .clmn111.fixed > .right} Правая колонка с фиксированой шириной
+ * @required {float: right}
+ * @required {margin-left: -100%} 
+ * @param {width}
+ * @limitation {width} Changing width in JavaScript not supported because of IE7 bug and non-runtime expression for fix it (@ie_expression {.ielt8 .clmn011.fixed > .right, .ielt8 .clmn111.fixed > .right})
+ */
+.clmn011.fixed > .right, .clmn111.fixed > .right {
+	float: right;
+	margin-left: -100%;
+	width: 250px;
+}
+/**
+ * @ie_expression {.ielt8 .clmn011.fixed > .right, .ielt8 .clmn111.fixed > .right} IE7 has a problem in understanding the left column rule of margin-left: -100% ( http://www.gerd-riesselmann.net/development/the-holy-grail-css-layout-fix-for-ie7)
+ * @target {.clmn011.fixed > .right, .clmn111.fixed > .right}
+ */
+.ielt8 .clmn011.fixed > .right, .ielt8 .clmn111.fixed > .right {
+	margin-left: expression(runtimeStyle.marginLeft="-"+this.offsetWidth+(currentStyle.width||"0px").match(/(px|em|\%|pt)/)[0]); /* Fix for IE7 */
+}
+/* > Правая колонка --- */
+
+
+
+
+/** @component {.tabsContainer} Контейнер со вкладками. Вкладки располагаются в (.tabsContainer > .tabs) */
+/** @component {.tabsContainer > .left > .tabs > *, .tabsContainer > .center > .tabs > *, .tabsContainer > .right > .tabs > *, .tabsContainer > .tabs > *} Одна вкладка. По умолчанию, скрыта */
+/** @component {.pages} Контейнер со страницами. Страницы располагаются в (.pages > .data). Аналогичен .tabs */
+/** @component {.pages > .data > *} Одна страница. По умолчанию, скрыта */
+.tabsContainer > * > .tabs > *,
+.tabsContainer > .tabs > *,
+.pages > .data > * {
+	display: none;
+	height: 100%;
+}
+/** @state {.tabsContainer > .left > .tabs > .select, .tabsContainer > .center > .tabs > .select, .tabsContainer > .right > .tabs > .select, .tabsContainer > .tabs > *.select} Вкладка выбрана/показана */
+/** @state {.pages > .data > *.select} Вкладка выбрана/показана */
+.tabsContainer > * > .tabs > .select,
+.tabsContainer > .tabs > .select,
+.pages > .data > .select {
+	display: block;
+}

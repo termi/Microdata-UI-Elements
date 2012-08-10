@@ -86,7 +86,7 @@ var WATabs = ui["WATabs"] = function (_params) {
 			tabEl.addEventListener(ui.EventTypes.ON_SHOW, function(event) {
 				//Проверим, что данная вкладка еще не открыта, и только если она не открыта, 
 				if(thisObj._currentTab != _currentIndex)
-					thisObj.DOMElement.currentTab = _currentIndex;
+					thisObj.DOMElement["currentTab"] = _currentIndex;
 					
 				this.classList.add("select");
 				//return false;
@@ -116,15 +116,15 @@ var WATabs = ui["WATabs"] = function (_params) {
 		//Меню для таб-контейнера
 		thisObj.DOMElement.addEventListener(ui.EventTypes.ON_CURRENT_CHILD_CHANGE, function(event) {
 			var newTabIndex = parseInt(event.detail);
-			if(!isNaN(newTabIndex) && thisObj.DOMElement.currentTab != newTabIndex) {
-				thisObj.DOMElement.currentTab = newTabIndex;
+			if(!isNaN(newTabIndex) && thisObj.DOMElement["currentTab"] != newTabIndex) {
+				thisObj.DOMElement["currentTab"] = newTabIndex;
 			}
 			//Предотвращяем всплытие события, для того, чтобы контейнер не получал ложного срабатывания
 			event.stopPropagation();
 		});
 		
 		//Покажем выбранный таб
-		thisObj.DOMElement.currentTab = thisObj._currentTab;
+		thisObj.DOMElement["currentTab"] = thisObj._currentTab;
 	}
 }
 Object["inherit"](WATabs, ui["WAElement"]);
@@ -173,7 +173,7 @@ WATabs.prototype.initTabsSpetialProperties = function(_element) {
 			},
 			"set" : function(newValue) {
 				if(!isNaN(newValue = parseInt(newValue))) {
-					thisObj.showTab(newValue);
+					thisObj.showTab(newValue);//thisObj._currentTab set here
 				}
 				return thisObj._currentTab;
 			}

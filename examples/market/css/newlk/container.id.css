@@ -1,0 +1,46 @@
+/** @component {container}
+ */
+
+#container {
+	padding-top: 125px;/*@(#container > header)->height + @(#container > header)->padding-[top|bottom] + @(#container > header .mainLogo) + 22px*/
+	padding-bottom: 34px;/*@(#container > footer)->height + @(#container > footer)->padding-[top|bottom]*/
+	position: absolute;
+	
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width:100%
+}
+ 
+#container > header {
+	padding-top: 12px;
+	height: 103px;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	}
+#container > header .mainLogo {
+	height: 32px;
+	}
+#container > .data {
+	height: 100%;
+}
+#container > footer {
+	height: 24px;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	}
+
+#container > header > h1 {
+	height: 32px;
+	
+	background: url(../i/header_logo.png) 0% 0% no-repeat;
+	
+	margin-bottom: 16px;
+	}
+

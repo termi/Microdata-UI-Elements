@@ -1,0 +1,9 @@
+/** @component {.standardBlock3 }
+ */
+.clmn110.ui-ColPadding > .center > .data {
+	padding-left: 4px;
+	}
+	
+.clmn111.ui-ColPadding > .center > .data, .clmn111.ui-ColPadding > .right > .data {
+	padding-left: 4px;
+	}

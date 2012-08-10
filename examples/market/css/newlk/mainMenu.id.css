@@ -1,0 +1,24 @@
+#mainMenu {
+	margin-left: 0;
+	height: 54px;
+	padding-top: 6px;
+	line-height: 60px;
+	}
+	
+#mainMenu .menuItem {
+	display: inline-block;
+	
+	height: 32px;
+	line-height: 32px;
+	
+	margin-right: 16px;
+	
+	font-family: "Open Sans";
+	font-weight: 300;
+	font-size: 20px;
+	}
+	
+#mainMenu .menuItem a {
+	text-decoration: none;
+	color: #666;
+}

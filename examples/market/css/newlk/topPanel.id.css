@@ -1,0 +1,54 @@
+#topPanel {
+	height: 44px;
+	position: relative;
+}
+
+#globalSearch {
+	float: left;
+	position: relative;
+	height: 42px;
+	width: 42px;
+}
+#globalSearch label {
+	position: absolute;
+	height: 42px;
+	width: 42px;
+	z-index: 999999;
+}
+#globalSearch label > input {
+	display: none;
+}
+#globalSearch label.select {
+	width: 400px;
+}
+#globalSearch label.select > input {
+	display: block;
+}
+
+
+#userInfo_menu {
+	float: right;
+	width: 200px;
+	background: red;
+	position: relative;
+}
+#userInfo_menu > header {
+	height: 42px;
+}
+#userInfo_menu > .data {
+	display: none;
+}
+#userInfo_menu > footer {
+	position: absolute;	
+	display: none;
+	height: 42px;
+	width: 200px;
+	background: green;
+}
+#userInfo_menu > footer .logout {
+	display: block;
+	height: 42px;
+}
+#userInfo_menu:hover > footer {
+	display: block;
+}

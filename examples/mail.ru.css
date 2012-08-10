@@ -1,0 +1,62 @@
+﻿#IE8BarId_alt,
+#rbLoadedId_blog,
+#rbLoadedId_list,
+.books_menu,
+.text_adv,
+.main_table td.left_block.pb_0i>*,
+.right_block>.l_media,
+body>.copyright,
+body>.shMain.w,
+form[action*='/subscribe/'],
+body>center>table:last-of-type,
+body>.copyright
+{
+	display: none !important;
+}
+.main_table td.left_block.pb_0i>div:first-of-type,
+.main_table td.left_block.pb_0i>ul:first-of-type,
+.main_table td.left_block.pb_0i>table:first-of-type {
+	display: block !important;
+}
+.right_block>h2:hover+.l_media,
+.right_block>h2+.l_media:hover {
+	display: block !important;
+	position: absolute !important;
+	background-color: white !important;
+	border: 1px solid gray !important;	
+	margin-top: -15px !important;
+	width: 300px !important;
+}
+
+/* For speeddeal */
+/* Opera < 11.10*/
+@media only screen and (max-width:1024px) and (min-width:1024px) and (max-height:768px) and (min-height:768px) {
+	body > *  {display: none !important}
+	body > .wrapper {display: block !important}
+	body > .wrapper > *  {display: none !important}
+	body > .wrapper > .authorization_position {display: block !important; font-size: 60px !important;width: 100% !important}
+	/*.authorization_position form {overflow: none !important;}*/
+	/*.authorization_position td.left_block {display: block !important;}*/
+	#postauthbox, #postauthbox .white-box .name {font-size: 60px !important}
+	#postauthbox .avatar {width: 300px !important;height: 300px !important;background-size: 300px !important}
+	#box_letmonitor {margin-left: 230px !important}
+	#box_unreadcount {font-size: 80px !important; font-weight: bold !important}
+	body > .wrapper > .authorization_position td.left_divider, .authorization_position td.search_block, #postauthbox .action, 
+	#postauthbox .compose, .authorization_position td.left_block form>img {display: none !important;}
+}
+/* Opera >= 11.10*/
+/*TODO:: Как их объединить? @media (view-mode: minimized), @media only screen and (... - не работает*/
+@media (view-mode: minimized) {
+	body > *  {display: none !important}
+	body > .wrapper {display: block !important}
+	body > .wrapper > *  {display: none !important}
+	body > .wrapper > .authorization_position {display: block !important; font-size: 60px !important;width: 100% !important}
+	/*.authorization_position form {overflow: none !important;}*/
+	/*.authorization_position td.left_block {display: block !important;}*/
+	#postauthbox, #postauthbox .white-box .name {font-size: 60px !important}
+	#postauthbox .avatar {width: 300px !important;height: 300px !important;background-size: 300px !important}
+	#box_letmonitor {margin-left: 230px !important}
+	#box_unreadcount {font-size: 80px !important; font-weight: bold !important}
+	body > .wrapper > .authorization_position td.left_divider, .authorization_position td.search_block, #postauthbox .action, 
+	#postauthbox .compose, .authorization_position td.left_block form>img {display: none !important;}
+}

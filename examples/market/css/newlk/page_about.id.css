@@ -1,0 +1,10 @@
+#page_about > .left.standardBlock3 > header, #page_about > .left.standardBlock3 > footer {
+	background-color: #3a5542;
+	}
+
+#page_about > .center > header {
+	background: #000 url(../i/grass.jpg) 0 0 no-repeat;
+	background-image: url(../i/mask000000.png), url(../i/grass.jpg);
+	background-position: 612px 0, 0 0;
+	}
+	

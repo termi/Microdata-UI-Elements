@@ -118,37 +118,38 @@ WAElement_prototype["init"] = function() {
 	
 	if(thisObj.isInit)return false;
 	
-	var _element = thisObj.DOMElement;
-	
-	//Temporary
-	//TODO:: rewrite
-	if(thisObj.microdataType != "onlifeschema.org/WebApplication" &&
-	   _isEmptyElement(_element))return false;//Предотвращаем дальнейшую инициализацию
-	
-	
 	//Первоначальная инициализация
+	var _element = thisObj.DOMElement;
+
+	if(!_element["__uielements__"])_element["__uielements__"] = {};
+	_element["__uielements__"][thisObj.microdataType] = thisObj;
 	
-	//_element.setAttribute("data-element-is-init", "true");//for tests
-	//if(!window.asdf)window.asdf = [];window.asdf.push(this);//for tests
-				
 	//Если у элемента есть id - назначаем его, нету - рандомная строка
 	/*thisObj.id = */_element.id || (_element.id = randomString(9) + "_");
-			
-	//Пройдёмся по всем под-компонентам и инициализируем их
-	thisObj.initComponents(thisObj.DOMElement);
 	
 	//Подпишемся на события
 	// add quickly events to the node
-	for (var key in this._prototypeEvents) {
-		// add the listener ... 
-		// NOTE: nothing to bind, no duplicated entries either
-		_element.addEventListener(key, this, false);
+	if(!this._prototypeEvents_local) {
+		var key;
+		this._prototypeEvents_local = this._prototypeEvents.concat();
+		while((key = this._prototypeEvents_local.pop()) !== void 0) {
+			// add the listener ... 
+			// NOTE: nothing to bind, no duplicated entries either
+			_element.addEventListener(key, this, false);
+		}
 	}
 	
 	//Alias
 	thisObj.properties = thisObj.DOMElement["properties"];
-
-	if(DEBUG)_element.__uielement__ = thisObj;
+	
+	//TODO:: Сейчас все виджеты с пустыми элементами будут помечатся как не инициализированные | thisObj.isInit == false
+	if(_isEmptyElement(_element))return false;//Предотвращаем дальнейшую инициализацию
+	
+	//_element.setAttribute("data-element-is-init", "true");//for tests
+	//if(!window.asdf)window.asdf = [];window.asdf.push(this);//for tests
+			
+	//Пройдёмся по всем под-компонентам и инициализируем их
+	thisObj.initComponents(thisObj.DOMElement);
 	
 	/** @type boolean */
 	return thisObj.isInit = true;
@@ -237,10 +238,12 @@ WAElement_prototype.initComponents = function __initComponents(node) {
 		
 		_itemType = component.getAttribute("itemtype");
 		
-		_itemType.split(/\s+/).forEach(function(type) { 
+		_itemType.split(/\s+/).forEach(function(type) {
+			if(component["__uielements__"] && component["__uielements__"][type])return;//Already done
+			
 			var _constructor = MicroformatConstructors[type];
 			if(!_constructor) {
-				console.info("unkonown component type : " + type);
+				if(DEBUG)console.info("unkonown component type : " + type);
 				__initComponents.call(thisObj, component);
 			}
 			else {

@@ -1,0 +1,62 @@
+#page_market_96gkj2 > .center {
+	width: 35%;
+}
+
+#page_market_96gkj2 > .right {
+	width: 65%;
+}
+
+#page_market_96gkj2 > .right > .tabs > .select .data.tabs > .select> .data > header {
+	padding: 0;
+	margin: 0;
+	border-bottom: 2px solid #a2a2a2;
+	height: 100px;
+}
+#page_market_96gkj2 > .right > .tabs > .select .data.tabs > .select> .data > header > .search {
+	width: 67%;
+	float: left;
+}
+#page_market_96gkj2 > .right > .tabs > .select .data.tabs > .select> .data > header > .order {
+	width: 33%;
+	float: right;
+}
+#page_market_96gkj2 > .right > .tabs > .select .data.tabs > .select> .data > header > .search,
+#page_market_96gkj2 > .right > .tabs > .select .data.tabs > .select> .data > header > .order {
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	padding: 15px 7px 10px 7px;
+}
+#akkor_market_4kjk29 > .tabs > .select .search > header,
+#akkor_market_4kjk29 > .tabs > .select .order > header {
+	color: #666;
+	margin-bottom: 20px;
+	font-size: 16px;
+}
+#akkor_market_4kjk29 > .tabs > .select .search > .data,
+#akkor_market_4kjk29 > .tabs > .select .order > .data  {
+	color: #000;
+}
+#akkor_market_4kjk29 > .tabs > .select .search > .data > span,
+#akkor_market_4kjk29 > .tabs > .select .order > .data  > span {
+	margin-top: 10px;
+}
+
+#akkor_market_4kjk29 > .tabs > .select > .data .searchItem {
+	border-bottom: 2px #d6d6d6 solid;
+	position: relative;
+	padding: 10px;
+}
+#akkor_market_4kjk29 > .tabs > .select > .data .searchItem > .buyMenu {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+#akkor_market_4kjk29 > .tabs > .select > .data .searchItem > .description {
+	
+}
+#akkor_market_4kjk29 > .tabs > .select > .data .searchItem .rating {
+	background: url(/application/onlife/market/akkor/i/stars.gif) #dcb972 top left no-repeat;
+	width: 86px;
+	height: 14px;
+}

@@ -1,0 +1,91 @@
+/** @component {.standardBlock3 }
+ */
+
+.standardBlock3 {
+	-webkit-box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.3); /* Saf3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
+       -moz-box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.3); /* FF3.5 - 3.6 */
+            box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.3); /* Opera 10.5, IE9, FF4+, Chrome 6+, iOS 5 */
+	}
+	
+	
+.standardBlock3 > footer {
+	height: 32px;
+	margin: 4px 0 0 0;
+	padding: 0 16px;
+	background: rgba(0, 0, 0, 0.5);
+	}
+
+.standardBlock3 > header {
+	position: relative;
+	background: gray;
+	}
+	
+	
+.standardBlock3 > header > .title {
+	margin: 0 0 0 16px;
+	height: 64px;
+	
+	line-height: 64px;
+	
+	font-family: "Open Sans", "Verdana";
+	font-weight: 300;
+	font-size: 22px;
+	color: #fff;
+	}
+
+/*.standardBlock3 > header:after {
+	display: block;
+	
+	position: absolute;
+	left: 720px;
+	top: 0;
+	
+	width: 112px;
+	height: 96px;
+	content: url(../i/mask000000.png);
+	}*/
+
+
+	
+.standardBlock3 > header > .topMenu {
+	height: 32px;
+	margin-bottom: 4px;
+	padding: 0 4px;
+	background: rgba(0, 0, 0, 0.5);
+	}
+
+.standardBlock3 > .data {
+	background: white;
+}
+.standardBlock3 > .data p {
+	margin-top: 10px;
+	text-indent: 10px;
+}
+.standardBlock3 > .data.list p {
+	margin-top: 0;
+	text-indent: 0;
+}
+	
+
+.standardBlock3 > .tabsMenu > button.menuItem {
+	width: 100%;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+}
+
+/*Временно */
+/*.standardBlock3 > .tabsMenu > .menuItem img {
+	display: none;
+}*/
+
+
+
+	
+.standardBlock3 > .tabsMenu > .menuItem:hover, .standardBlock3 > .tabsMenu > .menuItem:focus {
+	outline: none;
+	
+	color: #5b96bb;
+	background-image: url(../i/menuArrow.hover.png);
+	background-color: #f6fafc;
+	}
