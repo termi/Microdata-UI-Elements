@@ -1,4 +1,4 @@
-﻿/*
+/*
  * @requared ui.WAElement
  * @requared global["ResourceManager"]
  */
@@ -6,11 +6,16 @@
 ;(function(global) {//closure
 
 // IMPORT
+//TODO:: export to 'exports' and import via require
 var ui = global["ui"] = global["ui"] || {};
 
 var _urnPrefix = "urn",
 	/** @type {string} @const */
-	__SCRIPT_ID_PREFIX__ = "scr" + randomString(5),
+	UUID_PREFIX = "_" + Math.random(),
+	/** @type {number} */
+	UUID = 1,
+	/** @type {string} @const */
+	__SCRIPT_ID_PREFIX__ = "scr" + UUID_PREFIX,
 	_isEmptyElement = function(element) {
 		var isEmpty = !element.firstChild, i = 0;
 		
@@ -26,26 +31,26 @@ var _urnPrefix = "urn",
 	_forEach = Function.prototype.call.bind(Array.prototype.forEach);
 	
 /**
- * Класс описывающий поведение контейнера табов
- * Microdata type - onlifeschema.org/WebApplication
+ * Implimentation of WebApplication using Microdata API
+ * @microdata {<domen>/WebApplication}
  * @constructor
  * @extends {ui.WAElement}
  * @param {...} _params Params list the same as in ui.WAElement
  */
 var WebApplication = ui["WebApplication"] = function (_element, _owner) {
 	var thisObj = this;
-	//Наследуем свойства родительского класса
+	//Apply construcot of inherited class
 	WebApplication["superclass"].constructor.apply(thisObj, arguments);
 	
 /* PUBLIC */
-	/** Форма авторизации @type {ui.WAElement} */
-	thisObj.authForm = null;
+	/*TODO:: Auth form @type {ui.WAElement} */
+	//thisObj.authForm = null;
 	
-	thisObj.account = {
+	/*TODO:: thisObj.account = {
 		status : {
 			login : false
 		}
-	}
+	}*/
 	
 	
 
@@ -73,23 +78,21 @@ var WebApplication = ui["WebApplication"] = function (_element, _owner) {
 	}*/
 	
 /* INIT */
-	/** Ссылка на метод init родительского класса
+	/** Link to 'init' method of inherited class
 	 * @private
 	 * @type {Function}	 */
-	var superInit = thisObj["init"];//Сохраняем ссылку
-	/**
-	 * Инициализация
-	 */
+	var superInit = thisObj["init"];
+	
 	thisObj["init"] = function() {
-		//Вызываем метод родительского класса
+		//Call 'init' method of inherited class
 		var status = superInit.apply(thisObj, arguments);
-		if(status === false) {
+		if(status != false) {
 			if(!thisObj.templateLoaded) {
-				//Пробуем получить уникальный идентификатор ресурса
+				//Try to get urn of application
 				var urn = _element.getAttribute("itemid"),
 					urns = (urn || "").split(":"),
-					isURN = urns[0] === _urnPrefix,
-					realUrl = urns.length == 1 ? urns[0] : url.substr(urns[0].length + (urns[1] && urns[1].length || 0) + urns.length - 1);
+					isURN = urns[0] === _urnPrefix,//'urn:'
+					realUrl = urns.length == 1 ? urns[0] : urn.substr(urns[0].length + (urns[1] && urns[1].length || 0) + urns.length - 1);
 					
 				if(isURN && !thisObj.templateLoaded) {//Проверим на наличие и, что это уникальный идентификатор ресурса
 					
@@ -173,11 +176,11 @@ var WebApplication = ui["WebApplication"] = function (_element, _owner) {
 						}
 					});
 					
-					//Поднимаем флаг, что мы уже загружали шаблон или приложение
+					//set flag
 					thisObj.templateLoaded = true;
 				}
 			}
-			return false;//Предотвращаем дальнейшую инициализацию
+			return false;//prevent initialisation
 		}
 		else {
 		/*var tmp;
@@ -242,17 +245,17 @@ Object["inherit"](WebApplication, ui["WAElement"]);
 
 /* PROTOTYPE */
 /**
- * Тип разметки по микроформату или микродате
+ * Microdata type
  * @type {string}
  */
 WebApplication.prototype.microdataType = "onlifeschema.org/WebApplication";
-/**
- * Показать форму авторизации
- */
+/*TODO::
+ * show auth form
+ *
 WebApplication.prototype.showAuthForm = function() {
 	if(this.authForm)this.authForm.dispatchEvent(new CustomEvent("show", {bubbles : true, cancelable : true}))
 }
-
+*/
 
 WebApplication.prototype.processUrl = function(url, origin) {
 	return url.charAt(0) == "/" ? url :
@@ -281,7 +284,7 @@ WebApplication.prototype.loadJSApplication = function(jsonText, realUrl, onDone)
 	//2. Передавать JSON в конструктор Application
 	//3. Проверять json на валидность
 	
-	applicationId = json["id"];
+	applicationId = json["id"] || UUID_PREFIX + ++UUID;
 	//Ожидаем JSON определённого формата
 	//Загрузим необходимые css-файлы
 	cssArray = json["css"];
@@ -301,7 +304,7 @@ WebApplication.prototype.loadJSApplication = function(jsonText, realUrl, onDone)
 	//Основной js-файл приложения должен экспортировать метод init(DOMElement) в глобальный объект export
 	if(json["app"]) {
 		if(typeof json["app"] == "object") {
-			Object.extend(json, json["app"]);
+			Object["extend"](json, json["app"]);
 			onDone();
 		}
 		else if(typeof json["app"] == "function") {

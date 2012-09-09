@@ -1,4 +1,4 @@
-﻿// ==ClosureCompiler==
+// ==ClosureCompiler==
 // @compilation_level ADVANCED_OPTIMIZATIONS
 // @warning_level VERBOSE
 // @jscomp_warning missingProperties
@@ -25,12 +25,16 @@ var DEBUG = IS_DEBUG && !!(window && window.console);
 
 // IMPORT
 var ui = global["ui"] = global["ui"] || {},
-	randomString = global["randomString"];
+	randomString = function() {
+		return "_" + Math.random();
+	};
 
 var _hasOwnProperty = Function.prototype.call.bind(Object.prototype.hasOwnProperty),
+
 	/** @type {string} eventListners prefix
 	 * @const */
 	__eventListnersPrfx__ = "@",
+
 	_isEmptyElement = function(element) {//temporary
 		var isEmpty = !element.firstChild, i = 0, el;
 		
@@ -52,19 +56,12 @@ var _hasOwnProperty = Function.prototype.call.bind(Object.prototype.hasOwnProper
  */
 var WAElement = ui["WAElement"] = function(_element, _owner) {
 	if(DEBUG) {
-		if(_element == void 0)console.error("[ui.WAElement] new:: Элемент должен быть задан")
-		else if(typeof _element != "object")console.error("[ui.WAElement] new:: Элемент должен типа Object")
+		if(_element == void 0)console.error("[ui.WAElement] new:: Element in second parameter must be set")
+		else if(typeof _element != "object")console.error("[ui.WAElement] new:: Element in second parameter must be Object type")
 	}
-	
-	WAElement.formatTest(_element);
-	
-/* PRIVATE */
-	var thisObj = this,
-		/** Уникальный идентификатор
-		 * @type {number} */
-		_uid = ++WAElement._nextUid;
 
-/* SETTINGS */
+	var thisObj = this;
+
 	/** Объявление объекта для опций
 	 * @type {Object} */
 	thisObj.settings = {
@@ -82,9 +79,8 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 	
 	/** Owned application
 	 * @type {ui.WebApplication} */
-	thisObj.webApplication = _owner ? 
-		_owner instanceof ui["WebApplication"] ? _owner : _owner.webApplication
-		: null;
+	thisObj.webApplication = _owner &&
+		(_owner instanceof ui["WebApplication"] && _owner || _owner.webApplication) || null;
 	
 	/** Owner
 	 * @type {ui.WAElement} */
@@ -103,11 +99,10 @@ var WAElement = ui["WAElement"] = function(_element, _owner) {
 	 * @return {number} */
 	thisObj.uid = function() {
 		return _uid;
-	}
+	};
 	
 /* INIT */
-	thisObj["init"] = WAElement.prototype["init"];
-}
+};
 /* PROTOTYPE */
 var WAElement_prototype = WAElement.prototype;
 /* INIT */
@@ -119,7 +114,12 @@ WAElement_prototype["init"] = function() {
 	if(thisObj.isInit)return false;
 	
 	//Первоначальная инициализация
-	var _element = thisObj.DOMElement;
+	var _element = thisObj.DOMElement
+		, options = _element.getAttribute("data-wa-data")
+	;
+
+	try{options = JSON.parse(options)}catch(__e__){options = void 0}
+	if(options)Object["extend"](thisObj.settings, options);
 
 	if(!_element["__uielements__"])_element["__uielements__"] = {};
 	_element["__uielements__"][thisObj.microdataType] = thisObj;
@@ -153,7 +153,7 @@ WAElement_prototype["init"] = function() {
 	
 	/** @type boolean */
 	return thisObj.isInit = true;
-}
+};
 /* handleEvent START*/
 // Idea from http://webreflection.blogspot.com/2012/01/introducing-objecthandler.html & http://ajaxian.com/archives/an-alternative-way-to-addeventlistener
 WAElement_prototype["handleEvent"] = function(e) {
@@ -185,7 +185,7 @@ WAElement_prototype["handleEvent"] = function(e) {
 		listeners = this[evntListnerName];
 		if(listeners)doAllListeners(listeners, thisObj);
 	}
-}
+};
 WAElement_prototype["addEvent"] = function(_eventName, _handle) {
 	var thisObj = this,
 		listeners = thisObj._events[_eventName];
@@ -195,37 +195,37 @@ WAElement_prototype["addEvent"] = function(_eventName, _handle) {
 	}
 	
 	listeners.push(_handle);
-}
+};
 WAElement_prototype["removeEvent"] = function(_eventName) {
 	//TODO::
-}
+};
 /* handleEvent END*/
 
 /**
  * Тип разметки по микроформату или микродате
  * @type {string}
  */
-WAElement_prototype.microdataType = "onlifeschema.org/WAElement";
+WAElement_prototype.microdataType = "h123.ru/WAElement";
 /**
  * Показать элемент.
  * @this {ui.WAElement}
  */
 WAElement_prototype["show"] = function() {
 	this.DOMElement.dispatchEvent(new CustomEvent(ui.EventTypes.ON_SHOW, {bubbles : false}));
-}
+};
 /**
  * Скрыть элемент.
  * @this {ui.WAElement}
  */
 WAElement_prototype["hide"] = function() {
 	this.DOMElement.dispatchEvent(new CustomEvent(ui.EventTypes.ON_HIDE, {bubbles : false}));
-}
+};
 /**
  * Components init
  * @this {Node} node DOM Element with properties["component"]
  */
 WAElement_prototype.initComponents = function __initComponents(node) {
-	var _components = node["properties"]["component"],
+	var _components = node["properties"]["e-component"],
 		thisObj = this;
 	
 	if(!_components || _components.length === 0)return;
@@ -253,7 +253,7 @@ WAElement_prototype.initComponents = function __initComponents(node) {
 			}
 		})
 	}
-}
+};
 WAElement_prototype._prototypeEvents = [];
 
 /* STATIC */
@@ -279,14 +279,14 @@ WAElement["addEvent"] = function(_event, _handle) {
 		}
 	}
 	//TODO:: update all exists instances
-}
+};
 WAElement["removeEvent"] = function(_eventName, _handle) {
 	var thisObj = this;
 	if(!thisObj || thisObj == global)thisObj = WAElement_prototype;
 
 	_eventName = __eventListnersPrfx__ + _eventName;
 	//TODO::
-}
+};
 
 /**
  * Проверка на соответствие формату микродаты
@@ -307,7 +307,7 @@ WAElement.formatTest = function(_waElement) {
 		
 	//TODO:: inherit test
 	//
-}
+};
 
 /* LOGIC */
 WAElement["addEvent"](ui.EventTypes.ON_SHOW, function(event) {
@@ -322,7 +322,7 @@ WAElement["addEvent"](ui.EventTypes.ON_SHOW, function(event) {
 	}
 	
 	thisObj.DOMElement.classList.add(thisObj.settings.activeClass);
-})
+});
 WAElement["addEvent"](ui.EventTypes.ON_HIDE, function(event) {
 	if(DEBUG)console.log("HIDE")
 	

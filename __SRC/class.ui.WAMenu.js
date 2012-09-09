@@ -1,9 +1,11 @@
-﻿/*
+/*
  * @requared ui.WAElement
  * @requared window.bubbleEventListener
  */
 
 ;(function(global) {//closure
+
+var DelegateListener = require("DelegateListener");
 
 // IMPORT
 var ui = global["ui"] = global["ui"] || {};
@@ -25,10 +27,10 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 
 /* PRIVATE | FUNCTIONS*/
 	/**
-	 * Event listener for menuItems
+	 * Delegate event listener for menuItems
 	 * @this {HTMLElement} Элемент на который мы повесим этот обработчик
 	 */
-	var _menuItemsOnClick = bubbleEventListener(WAMenu.menuEventDetailAttribute, function(event, elem, elemAttrValue) {
+	var _menuItemsOnClick = new DelegateListener(WAMenu.menuEventDetailAttribute, function(event, elem, elemAttrValue) {
 		if(_currentMenuItem)_currentMenuItem.classList.remove("select");
 		(_currentMenuItem = elem).classList.add("select");
 	
@@ -48,7 +50,7 @@ var WAMenu = ui["WAMenu"] = function (_params) {
 	 */
 	//thisObj.menuItems;
 
-	thisObj.menuEvent = thisObj.DOMElement.getAttribute(WAMenu.menuEventAttribute);
+	thisObj.menuEvent = thisObj.settings["dispachEvent"] || "menu-change";
 	
 /* INIT */
 	/** Ссылка на метод init родительского класса
